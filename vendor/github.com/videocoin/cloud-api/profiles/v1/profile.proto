@@ -15,11 +15,7 @@ message Profile {
   string id = 1 [(gogoproto.moretags) = "gorm:\"type:varchar(36);primary_key\""];
   string name = 2;
   string description = 3;
-  bytes components = 4 [(gogoproto.moretags) = "gorm:\"type:varbinary(5096)\""];
+  bytes components = 4 [(gogoproto.moretags) = "gorm:\"type:json\""];
 
   bool is_enabled = 5;
-}
-
-message Profiles {
-  repeated Profile items = 1;
 }

@@ -12,14 +12,14 @@ import (
 	"github.com/videocoin/cloud-profiles/profiles"
 )
 
-func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.Profiles, error) {
+func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListItems, error) {
 	list, err := s.manager.ListProfiles(ctx)
 	if err != nil {
 		logFailedTo(s.logger, "get profiles list", err)
 		return nil, rpc.ErrRpcInternal
 	}
 
-	profiles := &v1.Profiles{}
+	profiles := &v1.ProfileListItems{}
 	if err := copier.Copy(&profiles.Items, &list); err != nil {
 		return nil, err
 	}

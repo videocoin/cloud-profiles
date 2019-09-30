@@ -106,7 +106,6 @@ github.com/uber/jaeger-lib/metrics
 github.com/videocoin/cloud-api/profiles/v1
 github.com/videocoin/cloud-api/rpc
 # github.com/videocoin/cloud-pkg v0.0.5 => ../cloud-pkg
-github.com/videocoin/cloud-pkg/uuid4
 github.com/videocoin/cloud-pkg/logger
 github.com/videocoin/cloud-pkg/tracer
 github.com/videocoin/cloud-pkg/grpcutil

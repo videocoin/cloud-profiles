@@ -32,6 +32,132 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
+type ProfileListItem struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	IsEnabled            bool     `protobuf:"varint,4,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProfileListItem) Reset()         { *m = ProfileListItem{} }
+func (m *ProfileListItem) String() string { return proto.CompactTextString(m) }
+func (*ProfileListItem) ProtoMessage()    {}
+func (*ProfileListItem) Descriptor() ([]byte, []int) {
+	return fileDescriptor_18a9eead35f48545, []int{0}
+}
+func (m *ProfileListItem) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ProfileListItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ProfileListItem.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ProfileListItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProfileListItem.Merge(m, src)
+}
+func (m *ProfileListItem) XXX_Size() int {
+	return m.Size()
+}
+func (m *ProfileListItem) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProfileListItem.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProfileListItem proto.InternalMessageInfo
+
+func (m *ProfileListItem) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *ProfileListItem) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *ProfileListItem) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *ProfileListItem) GetIsEnabled() bool {
+	if m != nil {
+		return m.IsEnabled
+	}
+	return false
+}
+
+func (*ProfileListItem) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.ProfileListItem"
+}
+
+type ProfileListItems struct {
+	Items                []*ProfileListItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
+	XXX_unrecognized     []byte             `json:"-"`
+	XXX_sizecache        int32              `json:"-"`
+}
+
+func (m *ProfileListItems) Reset()         { *m = ProfileListItems{} }
+func (m *ProfileListItems) String() string { return proto.CompactTextString(m) }
+func (*ProfileListItems) ProtoMessage()    {}
+func (*ProfileListItems) Descriptor() ([]byte, []int) {
+	return fileDescriptor_18a9eead35f48545, []int{1}
+}
+func (m *ProfileListItems) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ProfileListItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ProfileListItems.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ProfileListItems) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProfileListItems.Merge(m, src)
+}
+func (m *ProfileListItems) XXX_Size() int {
+	return m.Size()
+}
+func (m *ProfileListItems) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProfileListItems.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProfileListItems proto.InternalMessageInfo
+
+func (m *ProfileListItems) GetItems() []*ProfileListItem {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
+func (*ProfileListItems) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.ProfileListItems"
+}
+
 type RenderRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Input                string   `protobuf:"bytes,2,opt,name=input,proto3" json:"input,omitempty"`
@@ -45,7 +171,7 @@ func (m *RenderRequest) Reset()         { *m = RenderRequest{} }
 func (m *RenderRequest) String() string { return proto.CompactTextString(m) }
 func (*RenderRequest) ProtoMessage()    {}
 func (*RenderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{0}
+	return fileDescriptor_18a9eead35f48545, []int{2}
 }
 func (m *RenderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -110,7 +236,7 @@ func (m *RenderResponse) Reset()         { *m = RenderResponse{} }
 func (m *RenderResponse) String() string { return proto.CompactTextString(m) }
 func (*RenderResponse) ProtoMessage()    {}
 func (*RenderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{1}
+	return fileDescriptor_18a9eead35f48545, []int{3}
 }
 func (m *RenderResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -150,6 +276,10 @@ func (*RenderResponse) XXX_MessageName() string {
 	return "cloud.api.profiles.v1.RenderResponse"
 }
 func init() {
+	proto.RegisterType((*ProfileListItem)(nil), "cloud.api.profiles.v1.ProfileListItem")
+	golang_proto.RegisterType((*ProfileListItem)(nil), "cloud.api.profiles.v1.ProfileListItem")
+	proto.RegisterType((*ProfileListItems)(nil), "cloud.api.profiles.v1.ProfileListItems")
+	golang_proto.RegisterType((*ProfileListItems)(nil), "cloud.api.profiles.v1.ProfileListItems")
 	proto.RegisterType((*RenderRequest)(nil), "cloud.api.profiles.v1.RenderRequest")
 	golang_proto.RegisterType((*RenderRequest)(nil), "cloud.api.profiles.v1.RenderRequest")
 	proto.RegisterType((*RenderResponse)(nil), "cloud.api.profiles.v1.RenderResponse")
@@ -162,32 +292,37 @@ func init() {
 }
 
 var fileDescriptor_18a9eead35f48545 = []byte{
-	// 389 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x52, 0x51, 0x4b, 0xeb, 0x30,
-	0x18, 0xbd, 0xed, 0xbd, 0xb7, 0xdc, 0x1b, 0x70, 0x8e, 0xa0, 0xa3, 0x76, 0x52, 0xa5, 0x28, 0xec,
-	0x65, 0x09, 0xd3, 0x7f, 0x20, 0x08, 0x3e, 0x28, 0xca, 0xf6, 0x20, 0xfa, 0x22, 0x5d, 0x9b, 0x75,
-	0x81, 0xae, 0x89, 0x4d, 0x5a, 0xd0, 0x47, 0xff, 0x82, 0xe0, 0xef, 0xf1, 0x71, 0x8f, 0x82, 0x7f,
-	0x40, 0x36, 0x7f, 0x88, 0x34, 0x49, 0xd9, 0x84, 0x0d, 0xdf, 0x72, 0xce, 0x77, 0x72, 0x7a, 0xbe,
-	0x93, 0x82, 0x80, 0xe7, 0x6c, 0x44, 0x53, 0x22, 0x70, 0xd9, 0xc3, 0xf5, 0xf9, 0x4e, 0x90, 0xbc,
-	0xa4, 0x11, 0x41, 0x3c, 0x67, 0x92, 0xc1, 0xed, 0x28, 0x65, 0x45, 0x8c, 0x42, 0x4e, 0x51, 0xad,
-	0x40, 0x65, 0xcf, 0x6b, 0x27, 0x8c, 0x25, 0x29, 0xc1, 0x4a, 0x34, 0x2c, 0x46, 0x98, 0x4c, 0xb8,
-	0x7c, 0xd0, 0x77, 0xbc, 0x5d, 0x33, 0x0c, 0x39, 0xc5, 0x61, 0x96, 0x31, 0x19, 0x4a, 0xca, 0x32,
-	0x61, 0xa6, 0xdd, 0x84, 0xca, 0x71, 0x31, 0x44, 0x11, 0x9b, 0xe0, 0x84, 0x25, 0x6c, 0xe1, 0x51,
-	0x21, 0x05, 0xd4, 0xc9, 0xc8, 0xf1, 0x92, 0xbc, 0xa4, 0x31, 0x61, 0x11, 0xa3, 0x19, 0x56, 0xa9,
-	0xba, 0xd5, 0x07, 0x72, 0x1e, 0xe1, 0x31, 0x09, 0x53, 0x39, 0x36, 0x17, 0x76, 0x56, 0x6c, 0xa5,
-	0x47, 0xc1, 0x05, 0xd8, 0xe8, 0x93, 0x2c, 0x26, 0x79, 0x9f, 0xdc, 0x17, 0x44, 0x48, 0xd8, 0x00,
-	0x36, 0x8d, 0x5d, 0x6b, 0xdf, 0xea, 0xfc, 0xef, 0xdb, 0x34, 0x86, 0x5b, 0xe0, 0x2f, 0xcd, 0x78,
-	0x21, 0x5d, 0x5b, 0x51, 0x1a, 0xc0, 0x16, 0x70, 0x58, 0x21, 0x2b, 0xfa, 0xb7, 0xa2, 0x0d, 0x0a,
-	0x3a, 0xa0, 0x51, 0xdb, 0x09, 0xce, 0x32, 0x41, 0x2a, 0x65, 0xae, 0x18, 0xe3, 0x69, 0xd0, 0xd1,
-	0x8b, 0x0d, 0x36, 0xaf, 0x4c, 0xac, 0x81, 0xee, 0x17, 0x5e, 0x02, 0xe7, 0x4c, 0xe5, 0x86, 0x2d,
-	0xa4, 0x0b, 0x43, 0x75, 0x13, 0xe8, 0xb4, 0x6a, 0xd3, 0x6b, 0xa3, 0x45, 0xf9, 0x39, 0x8f, 0x90,
-	0x96, 0x0f, 0x64, 0x28, 0x0b, 0x11, 0x34, 0x9f, 0xde, 0x3f, 0x9f, 0x6d, 0x00, 0xff, 0x99, 0xed,
-	0x1f, 0xe1, 0x0d, 0xf8, 0x73, 0x4e, 0x85, 0x5c, 0x6b, 0xb7, 0x87, 0x56, 0xbe, 0x25, 0xaa, 0x83,
-	0x05, 0xae, 0xb2, 0x84, 0xb0, 0xa9, 0x5e, 0x6e, 0xe9, 0x9f, 0x80, 0xd7, 0xc0, 0xd1, 0x9b, 0xc2,
-	0x83, 0x35, 0x26, 0xdf, 0x7a, 0xf5, 0x0e, 0x7f, 0x50, 0xe9, 0xba, 0x82, 0x5f, 0x27, 0xee, 0x74,
-	0xe6, 0x5b, 0x6f, 0x33, 0xdf, 0xfa, 0x98, 0xf9, 0xd6, 0xeb, 0xdc, 0xb7, 0xa6, 0x73, 0xdf, 0xba,
-	0xb5, 0xcb, 0xde, 0xd0, 0x51, 0xe9, 0x8f, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0x68, 0xe8, 0x8b,
-	0x75, 0xa5, 0x02, 0x00, 0x00,
+	// 474 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xcd, 0x6e, 0xd4, 0x30,
+	0x10, 0xc6, 0xe9, 0x76, 0xd5, 0xba, 0xa2, 0xac, 0x2c, 0xa8, 0xc2, 0x16, 0xa2, 0x55, 0xc4, 0xcf,
+	0x5e, 0x6a, 0x6b, 0xcb, 0x95, 0x13, 0x52, 0x25, 0x90, 0x40, 0x54, 0xe9, 0x01, 0x89, 0x4b, 0xe5,
+	0x4d, 0xa6, 0x59, 0x4b, 0x59, 0xdb, 0xc4, 0x4e, 0x24, 0x38, 0xf2, 0x0a, 0xdc, 0x79, 0x16, 0x8e,
+	0x3d, 0x22, 0xf1, 0x02, 0x68, 0xcb, 0x83, 0xa0, 0xd8, 0x5e, 0x08, 0xa5, 0x15, 0xdc, 0x66, 0xbe,
+	0xf9, 0xe6, 0xb3, 0xbf, 0x99, 0xc1, 0xa9, 0xae, 0xd5, 0x99, 0xa8, 0xc0, 0xb0, 0x76, 0xc6, 0xd6,
+	0xf1, 0xa9, 0x81, 0xba, 0x15, 0x39, 0x50, 0x5d, 0x2b, 0xab, 0xc8, 0x9d, 0xbc, 0x52, 0x4d, 0x41,
+	0xb9, 0x16, 0x74, 0xcd, 0xa0, 0xed, 0x6c, 0xbc, 0x5f, 0x2a, 0x55, 0x56, 0xc0, 0x1c, 0x69, 0xde,
+	0x9c, 0x31, 0x58, 0x6a, 0xfb, 0xde, 0xf7, 0x8c, 0xef, 0x85, 0x22, 0xd7, 0x82, 0x71, 0x29, 0x95,
+	0xe5, 0x56, 0x28, 0x69, 0x42, 0xf5, 0xa0, 0x14, 0x76, 0xd1, 0xcc, 0x69, 0xae, 0x96, 0xac, 0x54,
+	0xa5, 0xfa, 0xad, 0xd1, 0x65, 0x2e, 0x71, 0x51, 0xa0, 0xb3, 0x1e, 0xbd, 0x15, 0x05, 0xa8, 0x5c,
+	0x09, 0xc9, 0xdc, 0xaf, 0x0e, 0xba, 0x07, 0x6a, 0x9d, 0xb3, 0x05, 0xf0, 0xca, 0x2e, 0x42, 0xc3,
+	0xdd, 0x2b, 0x5c, 0xf9, 0x52, 0xda, 0xe2, 0x5b, 0xc7, 0x1e, 0x78, 0x29, 0x8c, 0x7d, 0x61, 0x61,
+	0x49, 0x76, 0x71, 0x24, 0x8a, 0x18, 0x4d, 0xd0, 0x74, 0x3b, 0x8b, 0x44, 0x41, 0x08, 0x1e, 0x48,
+	0xbe, 0x84, 0x38, 0x72, 0x88, 0x8b, 0xc9, 0x04, 0xef, 0x14, 0x60, 0xf2, 0x5a, 0xe8, 0xce, 0x47,
+	0xbc, 0xe1, 0x4a, 0x7d, 0x88, 0xdc, 0xc7, 0x58, 0x98, 0x53, 0x90, 0x7c, 0x5e, 0x41, 0x11, 0x0f,
+	0x26, 0x68, 0xba, 0x95, 0x6d, 0x0b, 0x73, 0xe4, 0x81, 0xf4, 0x18, 0x8f, 0x2e, 0xbd, 0x6b, 0xc8,
+	0x53, 0xbc, 0x29, 0xba, 0x20, 0x46, 0x93, 0x8d, 0xe9, 0xce, 0xe1, 0x23, 0x7a, 0xe5, 0xa0, 0xe9,
+	0xa5, 0xbe, 0xcc, 0x37, 0xa5, 0xaf, 0xf0, 0xcd, 0x0c, 0x64, 0x01, 0x75, 0x06, 0xef, 0x1a, 0x30,
+	0xf6, 0x2f, 0x1f, 0xb7, 0xf1, 0xa6, 0x90, 0xba, 0xb1, 0xc1, 0x88, 0x4f, 0xc8, 0x1e, 0x1e, 0xaa,
+	0xc6, 0x76, 0xb0, 0x37, 0x11, 0xb2, 0x74, 0x8a, 0x77, 0xd7, 0x72, 0x46, 0x2b, 0x69, 0xa0, 0x63,
+	0xd6, 0x0e, 0x09, 0x9a, 0x21, 0x3b, 0xfc, 0x1c, 0xfd, 0x9a, 0xa1, 0x39, 0xf1, 0x97, 0x42, 0x5e,
+	0xe3, 0xe1, 0x73, 0xb7, 0x01, 0xb2, 0x47, 0xfd, 0xea, 0xe9, 0x7a, 0xa7, 0xf4, 0xa8, 0xbb, 0x8b,
+	0xf1, 0x7e, 0xcf, 0x5d, 0xad, 0x73, 0xea, 0xe9, 0x27, 0x96, 0xdb, 0xc6, 0xa4, 0xa3, 0x8f, 0xdf,
+	0x7e, 0x7c, 0x8a, 0x30, 0xd9, 0x0a, 0x7b, 0xfc, 0x40, 0x38, 0x1e, 0x74, 0x86, 0xaf, 0x95, 0x7b,
+	0xfc, 0x7f, 0xc3, 0x32, 0x69, 0xec, 0xa4, 0x09, 0x19, 0xb9, 0x5b, 0xec, 0x5d, 0x39, 0x79, 0x83,
+	0x87, 0xde, 0x31, 0x79, 0x70, 0x8d, 0xd8, 0x1f, 0xf3, 0x1d, 0x3f, 0xfc, 0x07, 0xcb, 0x8f, 0x2d,
+	0xbd, 0xf1, 0x2c, 0x3e, 0x5f, 0x25, 0xe8, 0xeb, 0x2a, 0x41, 0xdf, 0x57, 0x09, 0xfa, 0x72, 0x91,
+	0xa0, 0xf3, 0x8b, 0x04, 0xbd, 0x8d, 0xda, 0xd9, 0x7c, 0xe8, 0x5c, 0x3c, 0xf9, 0x19, 0x00, 0x00,
+	0xff, 0xff, 0x17, 0x47, 0x01, 0x24, 0x77, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -203,7 +338,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProfilesServiceClient interface {
 	Health(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*rpc.HealthStatus, error)
-	List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*Profiles, error)
+	List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListItems, error)
 	Render(ctx context.Context, in *RenderRequest, opts ...grpc.CallOption) (*RenderResponse, error)
 }
 
@@ -224,8 +359,8 @@ func (c *profilesServiceClient) Health(ctx context.Context, in *types.Empty, opt
 	return out, nil
 }
 
-func (c *profilesServiceClient) List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*Profiles, error) {
-	out := new(Profiles)
+func (c *profilesServiceClient) List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListItems, error) {
+	out := new(ProfileListItems)
 	err := c.cc.Invoke(ctx, "/cloud.api.profiles.v1.ProfilesService/List", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -245,7 +380,7 @@ func (c *profilesServiceClient) Render(ctx context.Context, in *RenderRequest, o
 // ProfilesServiceServer is the server API for ProfilesService service.
 type ProfilesServiceServer interface {
 	Health(context.Context, *types.Empty) (*rpc.HealthStatus, error)
-	List(context.Context, *types.Empty) (*Profiles, error)
+	List(context.Context, *types.Empty) (*ProfileListItems, error)
 	Render(context.Context, *RenderRequest) (*RenderResponse, error)
 }
 
@@ -256,7 +391,7 @@ type UnimplementedProfilesServiceServer struct {
 func (*UnimplementedProfilesServiceServer) Health(ctx context.Context, req *types.Empty) (*rpc.HealthStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
 }
-func (*UnimplementedProfilesServiceServer) List(ctx context.Context, req *types.Empty) (*Profiles, error) {
+func (*UnimplementedProfilesServiceServer) List(ctx context.Context, req *types.Empty) (*ProfileListItems, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (*UnimplementedProfilesServiceServer) Render(ctx context.Context, req *RenderRequest) (*RenderResponse, error) {
@@ -342,6 +477,88 @@ var _ProfilesService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "profiles/v1/profiles_service.proto",
 }
 
+func (m *ProfileListItem) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ProfileListItem) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintProfilesService(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
+	}
+	if len(m.Name) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintProfilesService(dAtA, i, uint64(len(m.Name)))
+		i += copy(dAtA[i:], m.Name)
+	}
+	if len(m.Description) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintProfilesService(dAtA, i, uint64(len(m.Description)))
+		i += copy(dAtA[i:], m.Description)
+	}
+	if m.IsEnabled {
+		dAtA[i] = 0x20
+		i++
+		if m.IsEnabled {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *ProfileListItems) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ProfileListItems) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, msg := range m.Items {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintProfilesService(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func (m *RenderRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -417,6 +634,51 @@ func encodeVarintProfilesService(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+func (m *ProfileListItem) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovProfilesService(uint64(l))
+	}
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + sovProfilesService(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovProfilesService(uint64(l))
+	}
+	if m.IsEnabled {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ProfileListItems) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovProfilesService(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *RenderRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -462,6 +724,264 @@ func sovProfilesService(x uint64) (n int) {
 }
 func sozProfilesService(x uint64) (n int) {
 	return sovProfilesService(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func (m *ProfileListItem) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfilesService
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ProfileListItem: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ProfileListItem: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsEnabled", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsEnabled = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfilesService(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ProfileListItems) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfilesService
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ProfileListItems: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ProfileListItems: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, &ProfileListItem{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfilesService(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
 }
 func (m *RenderRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
