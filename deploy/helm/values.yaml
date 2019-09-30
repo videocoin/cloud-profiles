@@ -1,0 +1,24 @@
+replicasCount: 1
+maxUnavailableCount: 0
+
+image:
+  repository: gcr.io/videocoin-network/profiles
+  tag: latest
+  pullPolicy: Always
+
+config: {}
+
+service:
+  type: ClusterIP
+  externalRpcPort: 5004
+  internalRpcPort: 5004
+
+autoscaler:
+  minCount: 1
+  maxCount: 10
+  targets:
+    targetCPUUtilizationPercentage: 70
+
+secrets:
+  dbUri: ""
+  sentryDsn: ""
