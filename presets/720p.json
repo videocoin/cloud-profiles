@@ -1,0 +1,28 @@
+{
+    "id": "45d5ef05-efef-4606-6fa3-48f42d3f0b93",
+    "name": "720p",
+    "description": "720p preset fast",
+    "is_enabled": true,
+    "components": [{
+        "type": "filter",
+        "params": [{
+            "key": "-vf",
+            "value": "scale=-1:720"
+        }]
+    }, {
+        "type": "transcode",
+        "params": [{
+            "key": "-c:v",
+            "value": "libx264"
+        }, {
+            "key": "-crf",
+            "value": "0"
+        }, {
+            "key": "-preset",
+            "value": "fast"
+        }, {
+            "key": "-c:a",
+            "value": "copy"
+        }]
+    }]
+}
