@@ -37,27 +37,6 @@ func main() {
 			panic(err)
 		}
 
-		// profile := new(profile.Profile)
-		// var data map[string]interface{}
-		// err = json.Unmarshal(content, profile)
-		// if err != nil {
-		// 	panic(err)
-		// }
-
-		// p := &v1.Profile{
-		// 	Name:        profile.Name,
-		// 	Description: profile.Description,
-		// 	IsEnabled:   profile.IsEnabled,
-		// }
-
-		// cc, _ := profile.SerializeComponents()
-		// p.Components = cc
-
-		// _, err = ds.Profile.Create(context.Background(), p)
-		// if err != nil {
-		// 	panic(err)
-		// }
-
 		buffer := new(bytes.Buffer)
 		if err := json.Compact(buffer, data); err != nil {
 			panic(err)
