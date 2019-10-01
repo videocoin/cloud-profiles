@@ -1,13 +1,12 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	ds "github.com/videocoin/cloud-profiles/datastore"
 )
@@ -37,33 +36,12 @@ func main() {
 			panic(err)
 		}
 
-		buffer := new(bytes.Buffer)
-		if err := json.Compact(buffer, data); err != nil {
-			panic(err)
-		}
-
-		var objmap map[string]*json.RawMessage
-		if err := json.Unmarshal(buffer.Bytes(), &objmap); err != nil {
-		}
-
 		profile := new(v1.Profile)
-		if err := json.Unmarshal(*objmap["id"], &profile.Id); err != nil {
+
+		m := &runtime.JSONPb{OrigName: true, EmitDefaults: true, EnumsAsInts: false}
+		if err := m.Unmarshal(data, &profile); err != nil {
 			panic(err)
 		}
-
-		if err := json.Unmarshal(*objmap["name"], &profile.Name); err != nil {
-			panic(err)
-		}
-
-		if err := json.Unmarshal(*objmap["description"], &profile.Description); err != nil {
-			panic(err)
-		}
-
-		if err := json.Unmarshal(*objmap["is_enabled"], &profile.IsEnabled); err != nil {
-			panic(err)
-		}
-
-		profile.Components = *objmap["components"]
 
 		_, err = ds.Profile.Create(context.Background(), profile)
 		if err != nil {

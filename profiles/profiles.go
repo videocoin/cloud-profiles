@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/videocoin/cloud-profiles/components"
+	v1 "github.com/videocoin/cloud-api/profiles/v1"
 )
 
 type Profile struct {
-	Components components.Components `json:"components"`
+	*v1.Profile
 }
 
 func ProfileFromContent(content []byte) (*Profile, error) {
@@ -32,11 +32,11 @@ func ProfileFromFile(filepath string) (*Profile, error) {
 }
 
 func (p *Profile) Render(input, output string) string {
-	var built []string
+	built := []string{"ffmpeg"}
 
 	built = append(built, "-i "+input)
 
-	for _, c := range p.Components {
+	for _, c := range p.Spec.Components {
 		built = append(built, c.Render())
 	}
 

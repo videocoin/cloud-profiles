@@ -3,26 +3,28 @@
     "name": "720p",
     "description": "720p preset fast",
     "is_enabled": true,
-    "components": [{
-        "type": "filter",
-        "params": [{
-            "key": "-vf",
-            "value": "scale=-1:720"
+    "spec": {
+        "components": [{
+            "type": "FILTER",
+            "params": [{
+                "key": "-vf",
+                "value": "scale=-1:720"
+            }]
+        }, {
+            "type": "ENCODER",
+            "params": [{
+                "key": "-c:v",
+                "value": "libx264"
+            }, {
+                "key": "-crf",
+                "value": "0"
+            }, {
+                "key": "-preset",
+                "value": "fast"
+            }, {
+                "key": "-c:a",
+                "value": "copy"
+            }]
         }]
-    }, {
-        "type": "transcode",
-        "params": [{
-            "key": "-c:v",
-            "value": "libx264"
-        }, {
-            "key": "-crf",
-            "value": "0"
-        }, {
-            "key": "-preset",
-            "value": "fast"
-        }, {
-            "key": "-c:a",
-            "value": "copy"
-        }]
-    }]
+    }
 }

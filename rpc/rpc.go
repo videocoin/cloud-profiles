@@ -46,11 +46,7 @@ func (s *RpcServer) Render(ctx context.Context, req *v1.RenderRequest) (*v1.Rend
 		return nil, rpc.ErrRpcInternal
 	}
 
-	p, err := profiles.ProfileFromContent(profile.Components)
-	if err != nil {
-		logFailedTo(logger, "get profile", err)
-		return nil, rpc.ErrRpcInternal
-	}
+	p := profiles.Profile{Profile: profile}
 
 	return &v1.RenderResponse{
 		Render: p.Render(req.Input, req.Output),
