@@ -15,7 +15,28 @@ message Profile {
   string id = 1 [(gogoproto.moretags) = "gorm:\"type:varchar(36);primary_key\""];
   string name = 2;
   string description = 3;
-  bytes components = 4 [(gogoproto.moretags) = "gorm:\"type:json\""];
+  bool is_enabled = 4;
+  Spec spec = 5 [(gogoproto.moretags) = "sql:\"type:json\""];
+}
 
-  bool is_enabled = 5;
+message Spec {
+  repeated Component components = 1;
+}
+
+enum ComponentType {
+  option (gogoproto.goproto_enum_prefix) = false;
+  option (gogoproto.enum_customname) = "ComponentType";
+
+  FILTER = 0 [(gogoproto.enumvalue_customname) = "ComponentTypeFilter"];
+  ENCODER = 1 [(gogoproto.enumvalue_customname) = "ComponentTypeEncoder"];
+}
+
+message Component {
+  ComponentType type = 1;
+  repeated Param params = 2;
+}
+
+message Param {
+  string key = 1;
+  string value = 2;
 }

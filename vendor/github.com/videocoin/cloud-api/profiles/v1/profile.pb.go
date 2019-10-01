@@ -25,12 +25,37 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
+type ComponentType int32
+
+const (
+	ComponentTypeFilter  ComponentType = 0
+	ComponentTypeEncoder ComponentType = 1
+)
+
+var ComponentType_name = map[int32]string{
+	0: "FILTER",
+	1: "ENCODER",
+}
+
+var ComponentType_value = map[string]int32{
+	"FILTER":  0,
+	"ENCODER": 1,
+}
+
+func (x ComponentType) String() string {
+	return proto.EnumName(ComponentType_name, int32(x))
+}
+
+func (ComponentType) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_9a6c1436ba9be611, []int{0}
+}
+
 type Profile struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" gorm:"type:varchar(36);primary_key"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Components           []byte   `protobuf:"bytes,4,opt,name=components,proto3" json:"components,omitempty" gorm:"type:json"`
-	IsEnabled            bool     `protobuf:"varint,5,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
+	IsEnabled            bool     `protobuf:"varint,4,opt,name=is_enabled,json=isEnabled,proto3" json:"is_enabled,omitempty"`
+	Spec                 *Spec    `protobuf:"bytes,5,opt,name=spec,proto3" json:"spec,omitempty" sql:"type:json"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -90,13 +115,6 @@ func (m *Profile) GetDescription() string {
 	return ""
 }
 
-func (m *Profile) GetComponents() []byte {
-	if m != nil {
-		return m.Components
-	}
-	return nil
-}
-
 func (m *Profile) GetIsEnabled() bool {
 	if m != nil {
 		return m.IsEnabled
@@ -104,37 +122,233 @@ func (m *Profile) GetIsEnabled() bool {
 	return false
 }
 
+func (m *Profile) GetSpec() *Spec {
+	if m != nil {
+		return m.Spec
+	}
+	return nil
+}
+
 func (*Profile) XXX_MessageName() string {
 	return "cloud.api.profiles.v1.Profile"
 }
+
+type Spec struct {
+	Components           []*Component `protobuf:"bytes,1,rep,name=components,proto3" json:"components,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
+}
+
+func (m *Spec) Reset()         { *m = Spec{} }
+func (m *Spec) String() string { return proto.CompactTextString(m) }
+func (*Spec) ProtoMessage()    {}
+func (*Spec) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a6c1436ba9be611, []int{1}
+}
+func (m *Spec) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Spec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Spec.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Spec) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Spec.Merge(m, src)
+}
+func (m *Spec) XXX_Size() int {
+	return m.Size()
+}
+func (m *Spec) XXX_DiscardUnknown() {
+	xxx_messageInfo_Spec.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Spec proto.InternalMessageInfo
+
+func (m *Spec) GetComponents() []*Component {
+	if m != nil {
+		return m.Components
+	}
+	return nil
+}
+
+func (*Spec) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.Spec"
+}
+
+type Component struct {
+	Type                 ComponentType `protobuf:"varint,1,opt,name=type,proto3,enum=cloud.api.profiles.v1.ComponentType" json:"type,omitempty"`
+	Params               []*Param      `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *Component) Reset()         { *m = Component{} }
+func (m *Component) String() string { return proto.CompactTextString(m) }
+func (*Component) ProtoMessage()    {}
+func (*Component) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a6c1436ba9be611, []int{2}
+}
+func (m *Component) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Component) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Component.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Component) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Component.Merge(m, src)
+}
+func (m *Component) XXX_Size() int {
+	return m.Size()
+}
+func (m *Component) XXX_DiscardUnknown() {
+	xxx_messageInfo_Component.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Component proto.InternalMessageInfo
+
+func (m *Component) GetType() ComponentType {
+	if m != nil {
+		return m.Type
+	}
+	return ComponentTypeFilter
+}
+
+func (m *Component) GetParams() []*Param {
+	if m != nil {
+		return m.Params
+	}
+	return nil
+}
+
+func (*Component) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.Component"
+}
+
+type Param struct {
+	Key                  string   `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value                string   `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Param) Reset()         { *m = Param{} }
+func (m *Param) String() string { return proto.CompactTextString(m) }
+func (*Param) ProtoMessage()    {}
+func (*Param) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9a6c1436ba9be611, []int{3}
+}
+func (m *Param) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Param) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Param.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Param) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Param.Merge(m, src)
+}
+func (m *Param) XXX_Size() int {
+	return m.Size()
+}
+func (m *Param) XXX_DiscardUnknown() {
+	xxx_messageInfo_Param.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Param proto.InternalMessageInfo
+
+func (m *Param) GetKey() string {
+	if m != nil {
+		return m.Key
+	}
+	return ""
+}
+
+func (m *Param) GetValue() string {
+	if m != nil {
+		return m.Value
+	}
+	return ""
+}
+
+func (*Param) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.Param"
+}
 func init() {
+	proto.RegisterEnum("cloud.api.profiles.v1.ComponentType", ComponentType_name, ComponentType_value)
+	golang_proto.RegisterEnum("cloud.api.profiles.v1.ComponentType", ComponentType_name, ComponentType_value)
 	proto.RegisterType((*Profile)(nil), "cloud.api.profiles.v1.Profile")
 	golang_proto.RegisterType((*Profile)(nil), "cloud.api.profiles.v1.Profile")
+	proto.RegisterType((*Spec)(nil), "cloud.api.profiles.v1.Spec")
+	golang_proto.RegisterType((*Spec)(nil), "cloud.api.profiles.v1.Spec")
+	proto.RegisterType((*Component)(nil), "cloud.api.profiles.v1.Component")
+	golang_proto.RegisterType((*Component)(nil), "cloud.api.profiles.v1.Component")
+	proto.RegisterType((*Param)(nil), "cloud.api.profiles.v1.Param")
+	golang_proto.RegisterType((*Param)(nil), "cloud.api.profiles.v1.Param")
 }
 
 func init() { proto.RegisterFile("profiles/v1/profile.proto", fileDescriptor_9a6c1436ba9be611) }
 func init() { golang_proto.RegisterFile("profiles/v1/profile.proto", fileDescriptor_9a6c1436ba9be611) }
 
 var fileDescriptor_9a6c1436ba9be611 = []byte{
-	// 286 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x8f, 0xcd, 0x4a, 0xc3, 0x40,
-	0x14, 0x85, 0x99, 0x58, 0x7f, 0x3a, 0xba, 0x90, 0x41, 0x61, 0x14, 0x4c, 0x43, 0x5c, 0x18, 0x17,
-	0x26, 0x94, 0x8a, 0x42, 0xdd, 0x15, 0xdc, 0x4b, 0x96, 0x6e, 0xca, 0x24, 0x99, 0xa6, 0xa3, 0xcd,
-	0xdc, 0x61, 0x26, 0x09, 0xe4, 0xed, 0x5c, 0x76, 0x23, 0xf8, 0x04, 0x45, 0xd2, 0x37, 0xe8, 0x13,
-	0x88, 0x13, 0x85, 0xec, 0xce, 0x39, 0xf7, 0x3b, 0xf7, 0x72, 0xf1, 0x85, 0xd2, 0xb0, 0x10, 0x2b,
-	0x6e, 0xa2, 0x7a, 0x1c, 0xfd, 0xe9, 0x50, 0x69, 0x28, 0x81, 0x9c, 0xa7, 0x2b, 0xa8, 0xb2, 0x90,
-	0x29, 0x11, 0xfe, 0x43, 0x61, 0x3d, 0xbe, 0xbc, 0xcb, 0x45, 0xb9, 0xac, 0x92, 0x30, 0x85, 0x22,
-	0xca, 0x21, 0x87, 0xc8, 0xd2, 0x49, 0xb5, 0xb0, 0xce, 0x1a, 0xab, 0xba, 0x2d, 0xfe, 0x27, 0xc2,
-	0x87, 0x2f, 0x5d, 0x9d, 0x3c, 0x62, 0x47, 0x64, 0x14, 0x79, 0x28, 0x18, 0xce, 0x6e, 0x76, 0x9b,
-	0xd1, 0x75, 0x0e, 0xba, 0x98, 0xfa, 0x65, 0xa3, 0xf8, 0xb4, 0x66, 0x3a, 0x5d, 0x32, 0x1d, 0x4c,
-	0x1e, 0x6e, 0x9f, 0x94, 0x16, 0x05, 0xd3, 0xcd, 0xfc, 0x9d, 0x37, 0x7e, 0xec, 0x88, 0x8c, 0x10,
-	0x3c, 0x90, 0xac, 0xe0, 0xd4, 0xf9, 0xad, 0xc6, 0x56, 0x13, 0x0f, 0x1f, 0x67, 0xdc, 0xa4, 0x5a,
-	0xa8, 0x52, 0x80, 0xa4, 0x7b, 0x76, 0xd4, 0x8f, 0xc8, 0x3d, 0xc6, 0x29, 0x14, 0x0a, 0x24, 0x97,
-	0xa5, 0xa1, 0x03, 0x0f, 0x05, 0x27, 0xb3, 0xb3, 0xdd, 0x66, 0x74, 0xda, 0x3b, 0xfb, 0x66, 0x40,
-	0xfa, 0x71, 0x8f, 0x23, 0x57, 0x18, 0x0b, 0x33, 0xe7, 0x92, 0x25, 0x2b, 0x9e, 0xd1, 0x7d, 0x0f,
-	0x05, 0x47, 0xf1, 0x50, 0x98, 0xe7, 0x2e, 0x98, 0xd1, 0x75, 0xeb, 0xa2, 0xaf, 0xd6, 0x45, 0xdf,
-	0xad, 0x8b, 0x3e, 0xb6, 0x2e, 0x5a, 0x6f, 0x5d, 0xf4, 0xea, 0xd4, 0xe3, 0xe4, 0xc0, 0x3e, 0x3c,
-	0xf9, 0x09, 0x00, 0x00, 0xff, 0xff, 0x08, 0x04, 0xfc, 0x1c, 0x53, 0x01, 0x00, 0x00,
+	// 477 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0x86, 0xbb, 0x89, 0x93, 0x92, 0x89, 0x80, 0x68, 0xdb, 0x0a, 0x13, 0xc0, 0xb5, 0x5c, 0x10,
+	0x06, 0x09, 0x5b, 0x49, 0x11, 0xa0, 0x72, 0x41, 0x69, 0x5d, 0x81, 0x84, 0xa0, 0x5a, 0x7a, 0xe2,
+	0x52, 0x39, 0xf6, 0x36, 0x5d, 0x6a, 0x7b, 0x97, 0xb5, 0x63, 0xc9, 0xe2, 0x05, 0x50, 0xdf, 0xa1,
+	0x27, 0x78, 0x0a, 0x4e, 0x1c, 0x7b, 0xe4, 0x05, 0xa8, 0x50, 0xfa, 0x06, 0x7d, 0x02, 0xe4, 0x75,
+	0x82, 0x1a, 0x89, 0xaa, 0xb7, 0x7f, 0x66, 0xbe, 0x7f, 0x66, 0x3c, 0x5e, 0xb8, 0x2d, 0x24, 0xdf,
+	0x67, 0x11, 0x4d, 0xdd, 0xbc, 0xe7, 0x4e, 0xb5, 0x23, 0x24, 0xcf, 0x38, 0x5e, 0x09, 0x22, 0x3e,
+	0x0e, 0x1d, 0x5f, 0x30, 0x67, 0x06, 0x39, 0x79, 0xaf, 0xfb, 0x64, 0xc4, 0xb2, 0x83, 0xf1, 0xd0,
+	0x09, 0x78, 0xec, 0x8e, 0xf8, 0x88, 0xbb, 0x8a, 0x1e, 0x8e, 0xf7, 0x55, 0xa4, 0x02, 0xa5, 0xaa,
+	0x2e, 0xd6, 0x6f, 0x04, 0x8b, 0x3b, 0x95, 0x1d, 0x3f, 0x87, 0x1a, 0x0b, 0x75, 0x64, 0x22, 0xbb,
+	0x35, 0x78, 0x78, 0x7e, 0xba, 0xba, 0x36, 0xe2, 0x32, 0xde, 0xb0, 0xb2, 0x42, 0xd0, 0x8d, 0xdc,
+	0x97, 0xc1, 0x81, 0x2f, 0xed, 0xf5, 0x67, 0x8f, 0x5e, 0x0a, 0xc9, 0x62, 0x5f, 0x16, 0x7b, 0x87,
+	0xb4, 0xb0, 0x48, 0x8d, 0x85, 0x18, 0x83, 0x96, 0xf8, 0x31, 0xd5, 0x6b, 0xa5, 0x95, 0x28, 0x8d,
+	0x4d, 0x68, 0x87, 0x34, 0x0d, 0x24, 0x13, 0x19, 0xe3, 0x89, 0x5e, 0x57, 0xa5, 0x8b, 0x29, 0x7c,
+	0x0f, 0x80, 0xa5, 0x7b, 0x34, 0xf1, 0x87, 0x11, 0x0d, 0x75, 0xcd, 0x44, 0xf6, 0x35, 0xd2, 0x62,
+	0xa9, 0x57, 0x25, 0xf0, 0x16, 0x68, 0xa9, 0xa0, 0x81, 0xde, 0x30, 0x91, 0xdd, 0xee, 0xdf, 0x71,
+	0xfe, 0xfb, 0xb9, 0xce, 0x07, 0x41, 0x83, 0xc1, 0xd2, 0xf9, 0xe9, 0xea, 0xcd, 0xf4, 0x73, 0x34,
+	0xdd, 0xf5, 0x53, 0xca, 0x13, 0x8b, 0x28, 0xb7, 0xf5, 0x1a, 0xb4, 0x12, 0xc1, 0xaf, 0x00, 0x02,
+	0x1e, 0x0b, 0x9e, 0xd0, 0x24, 0x4b, 0x75, 0x64, 0xd6, 0xed, 0x76, 0xdf, 0xbc, 0xa4, 0xe7, 0xe6,
+	0x0c, 0x24, 0x17, 0x3c, 0xd6, 0x17, 0x68, 0xfd, 0x2b, 0xe0, 0x17, 0xa0, 0x95, 0xa3, 0xd4, 0xb1,
+	0x6e, 0xf4, 0xef, 0x5f, 0xd5, 0x68, 0xb7, 0x10, 0x94, 0x28, 0x07, 0x7e, 0x0a, 0x4d, 0xe1, 0x4b,
+	0x3f, 0x4e, 0xf5, 0x9a, 0x5a, 0xe2, 0xee, 0x25, 0xde, 0x9d, 0x12, 0x22, 0x53, 0xd6, 0x72, 0xa1,
+	0xa1, 0x12, 0xb8, 0x03, 0xf5, 0x43, 0x5a, 0x54, 0x3f, 0x89, 0x94, 0x12, 0x2f, 0x43, 0x23, 0xf7,
+	0xa3, 0xf1, 0xec, 0xfa, 0x55, 0xf0, 0x58, 0xc2, 0xf5, 0xb9, 0xe9, 0x78, 0x0d, 0x9a, 0xdb, 0x6f,
+	0xde, 0xee, 0x7a, 0xa4, 0xb3, 0xd0, 0xbd, 0x75, 0x74, 0x6c, 0x2e, 0xcd, 0x95, 0xb7, 0x59, 0x94,
+	0x51, 0x89, 0x1f, 0xc0, 0xa2, 0xf7, 0x6e, 0xf3, 0xfd, 0x96, 0x47, 0x3a, 0xa8, 0xab, 0x1f, 0x1d,
+	0x9b, 0xcb, 0x73, 0x94, 0x97, 0x04, 0x3c, 0xa4, 0xb2, 0xbb, 0xf2, 0xf5, 0x9b, 0xb1, 0xf0, 0xe3,
+	0xbb, 0x31, 0x3f, 0x62, 0xa0, 0x9f, 0x4c, 0x0c, 0xf4, 0x6b, 0x62, 0xa0, 0x3f, 0x13, 0x03, 0xfd,
+	0x3c, 0x33, 0xd0, 0xc9, 0x99, 0x81, 0x3e, 0xd6, 0xf2, 0xde, 0xb0, 0xa9, 0x1e, 0xdb, 0xfa, 0xdf,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0xb9, 0xc0, 0x74, 0xa4, 0xcf, 0x02, 0x00, 0x00,
 }
 
 func (m *Profile) Marshal() (dAtA []byte, err error) {
@@ -170,14 +384,8 @@ func (m *Profile) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintProfile(dAtA, i, uint64(len(m.Description)))
 		i += copy(dAtA[i:], m.Description)
 	}
-	if len(m.Components) > 0 {
-		dAtA[i] = 0x22
-		i++
-		i = encodeVarintProfile(dAtA, i, uint64(len(m.Components)))
-		i += copy(dAtA[i:], m.Components)
-	}
 	if m.IsEnabled {
-		dAtA[i] = 0x28
+		dAtA[i] = 0x20
 		i++
 		if m.IsEnabled {
 			dAtA[i] = 1
@@ -185,6 +393,120 @@ func (m *Profile) MarshalTo(dAtA []byte) (int, error) {
 			dAtA[i] = 0
 		}
 		i++
+	}
+	if m.Spec != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintProfile(dAtA, i, uint64(m.Spec.Size()))
+		n1, err1 := m.Spec.MarshalTo(dAtA[i:])
+		if err1 != nil {
+			return 0, err1
+		}
+		i += n1
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Spec) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Spec) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Components) > 0 {
+		for _, msg := range m.Components {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintProfile(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Component) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Component) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Type != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintProfile(dAtA, i, uint64(m.Type))
+	}
+	if len(m.Params) > 0 {
+		for _, msg := range m.Params {
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintProfile(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Param) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Param) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Key) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintProfile(dAtA, i, uint64(len(m.Key)))
+		i += copy(dAtA[i:], m.Key)
+	}
+	if len(m.Value) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintProfile(dAtA, i, uint64(len(m.Value)))
+		i += copy(dAtA[i:], m.Value)
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -219,12 +541,71 @@ func (m *Profile) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovProfile(uint64(l))
 	}
-	l = len(m.Components)
+	if m.IsEnabled {
+		n += 2
+	}
+	if m.Spec != nil {
+		l = m.Spec.Size()
+		n += 1 + l + sovProfile(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Spec) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Components) > 0 {
+		for _, e := range m.Components {
+			l = e.Size()
+			n += 1 + l + sovProfile(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Component) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Type != 0 {
+		n += 1 + sovProfile(uint64(m.Type))
+	}
+	if len(m.Params) > 0 {
+		for _, e := range m.Params {
+			l = e.Size()
+			n += 1 + l + sovProfile(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Param) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Key)
 	if l > 0 {
 		n += 1 + l + sovProfile(uint64(l))
 	}
-	if m.IsEnabled {
-		n += 2
+	l = len(m.Value)
+	if l > 0 {
+		n += 1 + l + sovProfile(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -364,40 +745,6 @@ func (m *Profile) Unmarshal(dAtA []byte) error {
 			m.Description = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Components", wireType)
-			}
-			var byteLen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProfile
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				byteLen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if byteLen < 0 {
-				return ErrInvalidLengthProfile
-			}
-			postIndex := iNdEx + byteLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProfile
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Components = append(m.Components[:0], dAtA[iNdEx:postIndex]...)
-			if m.Components == nil {
-				m.Components = []byte{}
-			}
-			iNdEx = postIndex
-		case 5:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IsEnabled", wireType)
 			}
@@ -417,6 +764,355 @@ func (m *Profile) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.IsEnabled = bool(v != 0)
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Spec", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProfile
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Spec == nil {
+				m.Spec = &Spec{}
+			}
+			if err := m.Spec.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfile(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Spec) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfile
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Spec: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Spec: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Components", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProfile
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Components = append(m.Components, &Component{})
+			if err := m.Components[len(m.Components)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfile(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Component) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfile
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Component: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Component: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			m.Type = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Type |= ComponentType(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Params", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProfile
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Params = append(m.Params, &Param{})
+			if err := m.Params[len(m.Params)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfile(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Param) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfile
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Param: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Param: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Key", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfile
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Key = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfile
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfile
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfile
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Value = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipProfile(dAtA[iNdEx:])

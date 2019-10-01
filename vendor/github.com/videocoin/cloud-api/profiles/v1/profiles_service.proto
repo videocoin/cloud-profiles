@@ -4,11 +4,8 @@ package cloud.api.profiles.v1;
 
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
-
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "github.com/videocoin/cloud-api/rpc/health.proto";
-
-import "profiles/v1/profile.proto";
 
 option go_package = "v1";
 option (gogoproto.marshaler_all) = true;
