@@ -1,5 +1,5 @@
 {
-    "id": "45d5ef05-efef-4606-6fa3-48f42d3f0b93",
+    "id": "45d5ef05-efef-4606-6fa3-48f42d3f0b94",
     "name": "720p",
     "description": "720p preset fast",
     "is_enabled": true,
@@ -24,6 +24,9 @@
             }, {
                 "key": "-c:a",
                 "value": "copy"
+            }, {
+                "key": "-f",
+                "value": "hls"
             }]
         }]
     }
