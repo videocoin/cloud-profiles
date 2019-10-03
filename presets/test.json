@@ -1,0 +1,24 @@
+{
+    "id": "test",
+    "name": "test",
+    "description": "test",
+    "is_enabled": true,
+    "spec": {
+        "components": [{
+            "type": "ENCODER",
+            "params": [{
+                "key": "-c:v",
+                "value": "copy"
+            }, {
+                "key": "-c:a",
+                "value": "copy"
+            }, {
+                "key": "-f",
+                "value": "hls"
+            }, {
+                "key": "-hls_playlist_type",
+                "value": "event"
+            }]
+        }]
+    }
+}
