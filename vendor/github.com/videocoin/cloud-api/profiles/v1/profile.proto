@@ -20,7 +20,8 @@ message Profile {
 }
 
 message Spec {
-  repeated Component components = 1;
+  string version = 1;
+  repeated Component components = 2;
 }
 
 enum ComponentType {

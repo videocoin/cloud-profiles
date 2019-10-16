@@ -10,8 +10,8 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/sirupsen/logrus v1.4.2
-	github.com/videocoin/cloud-api v0.2.13
-	github.com/videocoin/cloud-pkg v0.0.5
+	github.com/videocoin/cloud-api v0.2.14
+	github.com/videocoin/cloud-pkg v0.0.6
 	google.golang.org/grpc v1.21.1
 )
 
