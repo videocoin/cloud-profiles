@@ -25,6 +25,9 @@
                 "key": "-c:a",
                 "value": "copy"
             }, {
+                "key": "-hls_list_size",
+                "value": "0"
+            }, {
                 "key": "-f",
                 "value": "hls"
             }]
