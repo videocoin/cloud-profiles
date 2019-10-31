@@ -3,7 +3,7 @@ module github.com/videocoin/cloud-profiles
 go 1.12
 
 require (
-	github.com/gogo/protobuf v1.2.1
+	github.com/gogo/protobuf v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway v1.11.3
 	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
 	github.com/jinzhu/gorm v1.9.11

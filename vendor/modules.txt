@@ -8,9 +8,9 @@ github.com/evalphobia/logrus_sentry
 github.com/getsentry/raven-go
 # github.com/go-sql-driver/mysql v1.4.1
 github.com/go-sql-driver/mysql
-# github.com/gogo/googleapis v1.2.0
+# github.com/gogo/googleapis v1.3.0
 github.com/gogo/googleapis/google/api
-# github.com/gogo/protobuf v1.2.1
+# github.com/gogo/protobuf v1.3.1
 github.com/gogo/protobuf/types
 github.com/gogo/protobuf/gogoproto
 github.com/gogo/protobuf/proto
@@ -131,6 +131,8 @@ google.golang.org/genproto/protobuf/field_mask
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.21.1
 google.golang.org/grpc
+google.golang.org/grpc/health
+google.golang.org/grpc/health/grpc_health_v1
 google.golang.org/grpc/reflection
 google.golang.org/grpc/codes
 google.golang.org/grpc/grpclog
