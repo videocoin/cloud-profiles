@@ -1,0 +1,36 @@
+{
+    "id": "190b9d72-208d-4fa2-90b7-5b203c0025d2",
+    "name": "SD",
+    "description": "SD",
+    "is_enabled": true,
+    "spec": {
+        "components": [{
+            "type": "FILTER",
+            "params": [{
+                "key": "-vf",
+                "value": "scale=640:-1"
+            }]
+        }, {
+            "type": "ENCODER",
+            "params": [{
+                "key": "-c:v",
+                "value": "libx264"
+            }, {
+                "key": "-b:v",
+                "value": "2000K"
+            }, {
+                "key": "-c:a",
+                "value": "copy"
+            }, {
+                "key": "-hls_list_size",
+                "value": "0"
+            }, {
+                "key": "-hls_time", 
+                "value": "10"
+            }, {
+                "key": "-f",
+                "value": "hls"
+            }]
+        }]
+    }
+}
