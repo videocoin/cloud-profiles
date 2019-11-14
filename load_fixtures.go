@@ -14,7 +14,7 @@ import (
 const presetsRoot = "presets/"
 
 func main() {
-	dbURI := os.Getenv("DBM_MSQLURI")
+	dbURI := os.Getenv("DBM_MSQLURI") // "user:pwd@tcp(127.0.0.1:3307)/cloud?charset=utf8"
 	ds, err := ds.NewDatastore(dbURI)
 	if err != nil {
 		panic(err)
