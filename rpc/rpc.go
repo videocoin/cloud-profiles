@@ -12,19 +12,42 @@ import (
 	"github.com/videocoin/cloud-profiles/profiles"
 )
 
-func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListItems, error) {
-	list, err := s.manager.ListProfiles(ctx)
+func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.ProfileResponse, error) {
+	span := opentracing.SpanFromContext(ctx)
+	span.SetTag("id", req.Id)
+	logger := s.logger.WithField("id", req.Id)
+
+	profile, err := s.manager.GetProfileByID(ctx, req.Id)
 	if err != nil {
-		logFailedTo(s.logger, "get profiles list", err)
+		if err == datastore.ErrProfileNotFound {
+			return nil, rpc.ErrRpcNotFound
+		}
+
+		logFailedTo(logger, "get profile", err)
 		return nil, rpc.ErrRpcInternal
 	}
 
-	profiles := &v1.ProfileListItems{}
-	if err := copier.Copy(&profiles.Items, &list); err != nil {
+	response := &v1.ProfileResponse{}
+	if err := copier.Copy(&response, &profile); err != nil {
 		return nil, err
 	}
 
-	return profiles, nil
+	return response, nil
+}
+
+func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
+	profiles, err := s.manager.ListProfiles(ctx)
+	if err != nil {
+		logFailedTo(s.logger, "profiles list", err)
+		return nil, rpc.ErrRpcInternal
+	}
+
+	response := &v1.ProfileListResponse{}
+	if err := copier.Copy(&response.Items, &profiles); err != nil {
+		return nil, err
+	}
+
+	return response, nil
 }
 
 func (s *RpcServer) Render(ctx context.Context, req *v1.RenderRequest) (*v1.RenderResponse, error) {
