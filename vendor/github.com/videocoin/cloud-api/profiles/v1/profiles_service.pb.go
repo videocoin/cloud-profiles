@@ -11,6 +11,7 @@ import (
 	proto "github.com/gogo/protobuf/proto"
 	types "github.com/gogo/protobuf/types"
 	golang_proto "github.com/golang/protobuf/proto"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -31,7 +32,58 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type ProfileListItem struct {
+type ProfileRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" validate:"required"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProfileRequest) Reset()         { *m = ProfileRequest{} }
+func (m *ProfileRequest) String() string { return proto.CompactTextString(m) }
+func (*ProfileRequest) ProtoMessage()    {}
+func (*ProfileRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_18a9eead35f48545, []int{0}
+}
+func (m *ProfileRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ProfileRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ProfileRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ProfileRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProfileRequest.Merge(m, src)
+}
+func (m *ProfileRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ProfileRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProfileRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProfileRequest proto.InternalMessageInfo
+
+func (m *ProfileRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (*ProfileRequest) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.ProfileRequest"
+}
+
+type ProfileResponse struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
@@ -41,18 +93,18 @@ type ProfileListItem struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ProfileListItem) Reset()         { *m = ProfileListItem{} }
-func (m *ProfileListItem) String() string { return proto.CompactTextString(m) }
-func (*ProfileListItem) ProtoMessage()    {}
-func (*ProfileListItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{0}
+func (m *ProfileResponse) Reset()         { *m = ProfileResponse{} }
+func (m *ProfileResponse) String() string { return proto.CompactTextString(m) }
+func (*ProfileResponse) ProtoMessage()    {}
+func (*ProfileResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_18a9eead35f48545, []int{1}
 }
-func (m *ProfileListItem) XXX_Unmarshal(b []byte) error {
+func (m *ProfileResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ProfileListItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ProfileResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ProfileListItem.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ProfileResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -62,69 +114,69 @@ func (m *ProfileListItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, err
 		return b[:n], nil
 	}
 }
-func (m *ProfileListItem) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProfileListItem.Merge(m, src)
+func (m *ProfileResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProfileResponse.Merge(m, src)
 }
-func (m *ProfileListItem) XXX_Size() int {
+func (m *ProfileResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *ProfileListItem) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProfileListItem.DiscardUnknown(m)
+func (m *ProfileResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProfileResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ProfileListItem proto.InternalMessageInfo
+var xxx_messageInfo_ProfileResponse proto.InternalMessageInfo
 
-func (m *ProfileListItem) GetId() string {
+func (m *ProfileResponse) GetId() string {
 	if m != nil {
 		return m.Id
 	}
 	return ""
 }
 
-func (m *ProfileListItem) GetName() string {
+func (m *ProfileResponse) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *ProfileListItem) GetDescription() string {
+func (m *ProfileResponse) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *ProfileListItem) GetIsEnabled() bool {
+func (m *ProfileResponse) GetIsEnabled() bool {
 	if m != nil {
 		return m.IsEnabled
 	}
 	return false
 }
 
-func (*ProfileListItem) XXX_MessageName() string {
-	return "cloud.api.profiles.v1.ProfileListItem"
+func (*ProfileResponse) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.ProfileResponse"
 }
 
-type ProfileListItems struct {
-	Items                []*ProfileListItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+type ProfileListResponse struct {
+	Items                []*ProfileResponse `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
 }
 
-func (m *ProfileListItems) Reset()         { *m = ProfileListItems{} }
-func (m *ProfileListItems) String() string { return proto.CompactTextString(m) }
-func (*ProfileListItems) ProtoMessage()    {}
-func (*ProfileListItems) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{1}
+func (m *ProfileListResponse) Reset()         { *m = ProfileListResponse{} }
+func (m *ProfileListResponse) String() string { return proto.CompactTextString(m) }
+func (*ProfileListResponse) ProtoMessage()    {}
+func (*ProfileListResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_18a9eead35f48545, []int{2}
 }
-func (m *ProfileListItems) XXX_Unmarshal(b []byte) error {
+func (m *ProfileListResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ProfileListItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ProfileListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ProfileListItems.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ProfileListResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -134,33 +186,33 @@ func (m *ProfileListItems) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 		return b[:n], nil
 	}
 }
-func (m *ProfileListItems) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ProfileListItems.Merge(m, src)
+func (m *ProfileListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProfileListResponse.Merge(m, src)
 }
-func (m *ProfileListItems) XXX_Size() int {
+func (m *ProfileListResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *ProfileListItems) XXX_DiscardUnknown() {
-	xxx_messageInfo_ProfileListItems.DiscardUnknown(m)
+func (m *ProfileListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProfileListResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ProfileListItems proto.InternalMessageInfo
+var xxx_messageInfo_ProfileListResponse proto.InternalMessageInfo
 
-func (m *ProfileListItems) GetItems() []*ProfileListItem {
+func (m *ProfileListResponse) GetItems() []*ProfileResponse {
 	if m != nil {
 		return m.Items
 	}
 	return nil
 }
 
-func (*ProfileListItems) XXX_MessageName() string {
-	return "cloud.api.profiles.v1.ProfileListItems"
+func (*ProfileListResponse) XXX_MessageName() string {
+	return "cloud.api.profiles.v1.ProfileListResponse"
 }
 
 type RenderRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Input                string   `protobuf:"bytes,2,opt,name=input,proto3" json:"input,omitempty"`
-	Output               string   `protobuf:"bytes,3,opt,name=output,proto3" json:"output,omitempty"`
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" validate:"required"`
+	Input                string   `protobuf:"bytes,2,opt,name=input,proto3" json:"input,omitempty" validate:"required"`
+	Output               string   `protobuf:"bytes,3,opt,name=output,proto3" json:"output,omitempty" validate:"required"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -170,7 +222,7 @@ func (m *RenderRequest) Reset()         { *m = RenderRequest{} }
 func (m *RenderRequest) String() string { return proto.CompactTextString(m) }
 func (*RenderRequest) ProtoMessage()    {}
 func (*RenderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{2}
+	return fileDescriptor_18a9eead35f48545, []int{3}
 }
 func (m *RenderRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -235,7 +287,7 @@ func (m *RenderResponse) Reset()         { *m = RenderResponse{} }
 func (m *RenderResponse) String() string { return proto.CompactTextString(m) }
 func (*RenderResponse) ProtoMessage()    {}
 func (*RenderResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_18a9eead35f48545, []int{3}
+	return fileDescriptor_18a9eead35f48545, []int{4}
 }
 func (m *RenderResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -275,10 +327,12 @@ func (*RenderResponse) XXX_MessageName() string {
 	return "cloud.api.profiles.v1.RenderResponse"
 }
 func init() {
-	proto.RegisterType((*ProfileListItem)(nil), "cloud.api.profiles.v1.ProfileListItem")
-	golang_proto.RegisterType((*ProfileListItem)(nil), "cloud.api.profiles.v1.ProfileListItem")
-	proto.RegisterType((*ProfileListItems)(nil), "cloud.api.profiles.v1.ProfileListItems")
-	golang_proto.RegisterType((*ProfileListItems)(nil), "cloud.api.profiles.v1.ProfileListItems")
+	proto.RegisterType((*ProfileRequest)(nil), "cloud.api.profiles.v1.ProfileRequest")
+	golang_proto.RegisterType((*ProfileRequest)(nil), "cloud.api.profiles.v1.ProfileRequest")
+	proto.RegisterType((*ProfileResponse)(nil), "cloud.api.profiles.v1.ProfileResponse")
+	golang_proto.RegisterType((*ProfileResponse)(nil), "cloud.api.profiles.v1.ProfileResponse")
+	proto.RegisterType((*ProfileListResponse)(nil), "cloud.api.profiles.v1.ProfileListResponse")
+	golang_proto.RegisterType((*ProfileListResponse)(nil), "cloud.api.profiles.v1.ProfileListResponse")
 	proto.RegisterType((*RenderRequest)(nil), "cloud.api.profiles.v1.RenderRequest")
 	golang_proto.RegisterType((*RenderRequest)(nil), "cloud.api.profiles.v1.RenderRequest")
 	proto.RegisterType((*RenderResponse)(nil), "cloud.api.profiles.v1.RenderResponse")
@@ -291,33 +345,52 @@ func init() {
 }
 
 var fileDescriptor_18a9eead35f48545 = []byte{
-	// 414 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xcd, 0xaa, 0xd3, 0x40,
-	0x14, 0x76, 0xd2, 0x1f, 0xec, 0x14, 0x6b, 0x19, 0xb4, 0x84, 0xa8, 0x21, 0x04, 0x7f, 0xb2, 0x71,
-	0x42, 0xeb, 0xd6, 0x95, 0xd0, 0x85, 0xa0, 0x50, 0xe2, 0x42, 0x70, 0x53, 0xf2, 0x33, 0x8d, 0x03,
-	0xc9, 0xcc, 0x98, 0x99, 0x04, 0xdc, 0xfa, 0x0a, 0xbe, 0x90, 0xcb, 0x6e, 0x04, 0xc1, 0x17, 0x90,
-	0xd6, 0x07, 0x91, 0xcc, 0x24, 0x5a, 0x7b, 0xef, 0xe5, 0xde, 0xdd, 0x39, 0xdf, 0xf9, 0xce, 0x39,
-	0xf3, 0x9d, 0x6f, 0xa0, 0x2f, 0x2a, 0xbe, 0xa3, 0x05, 0x91, 0x61, 0xb3, 0x0c, 0xfb, 0x78, 0x2b,
-	0x49, 0xd5, 0xd0, 0x94, 0x60, 0x51, 0x71, 0xc5, 0xd1, 0xfd, 0xb4, 0xe0, 0x75, 0x86, 0x63, 0x41,
-	0x71, 0xcf, 0xc0, 0xcd, 0xd2, 0x79, 0x90, 0x73, 0x9e, 0x17, 0x24, 0xd4, 0xa4, 0xa4, 0xde, 0x85,
-	0xa4, 0x14, 0xea, 0xb3, 0xe9, 0x71, 0x1e, 0x76, 0xc5, 0x58, 0xd0, 0x30, 0x66, 0x8c, 0xab, 0x58,
-	0x51, 0xce, 0x64, 0x57, 0x7d, 0x9e, 0x53, 0xf5, 0xb1, 0x4e, 0x70, 0xca, 0xcb, 0x30, 0xe7, 0x39,
-	0xff, 0x37, 0xa3, 0xcd, 0x74, 0xa2, 0x23, 0x43, 0xf7, 0x1b, 0x78, 0x77, 0x63, 0x16, 0xbf, 0xa1,
-	0x52, 0xbd, 0x56, 0xa4, 0x44, 0x33, 0x68, 0xd1, 0xcc, 0x06, 0x1e, 0x08, 0x26, 0x91, 0x45, 0x33,
-	0x84, 0xe0, 0x90, 0xc5, 0x25, 0xb1, 0x2d, 0x8d, 0xe8, 0x18, 0x79, 0x70, 0x9a, 0x11, 0x99, 0x56,
-	0x54, 0xb4, 0xbb, 0xed, 0x81, 0x2e, 0x9d, 0x42, 0xe8, 0x11, 0x84, 0x54, 0x6e, 0x09, 0x8b, 0x93,
-	0x82, 0x64, 0xf6, 0xd0, 0x03, 0xc1, 0xed, 0x68, 0x42, 0xe5, 0xda, 0x00, 0xfe, 0x06, 0xce, 0xcf,
-	0xf6, 0x4a, 0xf4, 0x12, 0x8e, 0x68, 0x1b, 0xd8, 0xc0, 0x1b, 0x04, 0xd3, 0xd5, 0x53, 0x7c, 0xe9,
-	0x71, 0xf0, 0x59, 0x5f, 0x64, 0x9a, 0xfc, 0xb7, 0xf0, 0x4e, 0x44, 0x58, 0x46, 0xaa, 0x88, 0x7c,
-	0xaa, 0x89, 0x54, 0x17, 0x74, 0xdc, 0x83, 0x23, 0xca, 0x44, 0xad, 0x3a, 0x21, 0x26, 0x41, 0x0b,
-	0x38, 0xe6, 0xb5, 0x6a, 0x61, 0x23, 0xa2, 0xcb, 0xfc, 0x00, 0xce, 0xfa, 0x71, 0x52, 0x70, 0x26,
-	0x49, 0xcb, 0xac, 0x34, 0xd2, 0xcd, 0xec, 0xb2, 0xd5, 0x77, 0xf0, 0xf7, 0x86, 0xf2, 0x9d, 0x71,
-	0x17, 0xc5, 0x70, 0xd8, 0xbe, 0x0f, 0x2d, 0xb0, 0x31, 0x0b, 0xf7, 0x2e, 0xe0, 0x75, 0xeb, 0xa4,
-	0xf3, 0xec, 0x66, 0xda, 0xa4, 0x6f, 0x7f, 0xf9, 0xf9, 0xfb, 0xab, 0x85, 0xd0, 0x5c, 0xdb, 0x7d,
-	0xf2, 0x91, 0xd0, 0x7b, 0x38, 0x36, 0x0f, 0x44, 0x8f, 0xaf, 0x18, 0xf6, 0xdf, 0x39, 0x9c, 0x27,
-	0xd7, 0xb0, 0x8c, 0x4a, 0xff, 0xd6, 0x2b, 0x7b, 0x7f, 0x70, 0xc1, 0x8f, 0x83, 0x0b, 0x7e, 0x1d,
-	0x5c, 0xf0, 0xed, 0xe8, 0x82, 0xfd, 0xd1, 0x05, 0x1f, 0xac, 0x66, 0x99, 0x8c, 0xb5, 0x8a, 0x17,
-	0x7f, 0x02, 0x00, 0x00, 0xff, 0xff, 0x3f, 0x41, 0x5f, 0x8f, 0xda, 0x02, 0x00, 0x00,
+	// 706 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0x4f, 0x4f, 0x13, 0x4f,
+	0x18, 0xc7, 0xd9, 0x2d, 0x34, 0x30, 0x84, 0xfe, 0xc8, 0xf0, 0x13, 0x9b, 0xaa, 0x75, 0x1c, 0x45,
+	0x9b, 0x86, 0xee, 0xd2, 0xc2, 0xc5, 0xc6, 0x0b, 0x24, 0x84, 0x18, 0x8d, 0x21, 0x4b, 0x82, 0x09,
+	0x31, 0x21, 0xdb, 0xdd, 0xa7, 0xdb, 0x31, 0xdb, 0x99, 0x65, 0x67, 0xb6, 0x88, 0xc6, 0x8b, 0x2f,
+	0x41, 0x2f, 0xbe, 0x04, 0x5f, 0x86, 0x47, 0x8e, 0x26, 0xde, 0x89, 0x01, 0x5f, 0x81, 0x47, 0x4f,
+	0x66, 0x67, 0xb7, 0xfc, 0x11, 0x01, 0x3d, 0xed, 0x33, 0xcf, 0x7c, 0x9e, 0xef, 0x3e, 0xff, 0x06,
+	0xd1, 0x28, 0x16, 0x5d, 0x16, 0x82, 0xb4, 0x07, 0x4d, 0x7b, 0x68, 0x6f, 0x4b, 0x88, 0x07, 0xcc,
+	0x03, 0x2b, 0x8a, 0x85, 0x12, 0xf8, 0x9a, 0x17, 0x8a, 0xc4, 0xb7, 0xdc, 0x88, 0x59, 0x43, 0xc2,
+	0x1a, 0x34, 0x2b, 0x37, 0x02, 0x21, 0x82, 0x10, 0x6c, 0x0d, 0x75, 0x92, 0xae, 0x0d, 0xfd, 0x48,
+	0xed, 0x65, 0x31, 0x95, 0x9b, 0xf9, 0xa5, 0x1b, 0x31, 0xdb, 0xe5, 0x5c, 0x28, 0x57, 0x31, 0xc1,
+	0x65, 0x7e, 0xdb, 0x08, 0x98, 0xea, 0x25, 0x1d, 0xcb, 0x13, 0x7d, 0x3b, 0x10, 0x81, 0x38, 0xd1,
+	0x48, 0x4f, 0xfa, 0xa0, 0xad, 0x1c, 0x9f, 0xd7, 0x1f, 0xaf, 0x11, 0x00, 0x6f, 0xc8, 0x5d, 0x37,
+	0x08, 0x20, 0xb6, 0x45, 0xa4, 0x05, 0xcf, 0x8b, 0xd3, 0x87, 0xa8, 0xb4, 0x9e, 0xa5, 0xe9, 0xc0,
+	0x4e, 0x02, 0x52, 0xe1, 0x07, 0xc8, 0x64, 0x7e, 0xd9, 0x20, 0x46, 0x6d, 0x62, 0xe5, 0xfa, 0x8f,
+	0x83, 0xdb, 0x33, 0x03, 0x37, 0x64, 0xbe, 0xab, 0xa0, 0x4d, 0x63, 0xd8, 0x49, 0x58, 0x0c, 0x3e,
+	0x75, 0x4c, 0xe6, 0xd3, 0x01, 0xfa, 0xef, 0x38, 0x54, 0x46, 0x82, 0x4b, 0xc0, 0xa5, 0x93, 0xd8,
+	0x14, 0xc1, 0x18, 0x8d, 0x72, 0xb7, 0x0f, 0x65, 0x53, 0x7b, 0xb4, 0x8d, 0x09, 0x9a, 0xf4, 0x41,
+	0x7a, 0x31, 0xd3, 0x39, 0x95, 0x0b, 0xfa, 0xea, 0xb4, 0x0b, 0xdf, 0x42, 0x88, 0xc9, 0x6d, 0xe0,
+	0x6e, 0x27, 0x04, 0xbf, 0x3c, 0x4a, 0x8c, 0xda, 0xb8, 0x33, 0xc1, 0xe4, 0x6a, 0xe6, 0xa0, 0x1b,
+	0x68, 0x26, 0xff, 0xef, 0x53, 0x26, 0xd5, 0xf1, 0xbf, 0x1f, 0xa1, 0x31, 0xa6, 0xa0, 0x2f, 0xcb,
+	0x06, 0x29, 0xd4, 0x26, 0x5b, 0xf7, 0xad, 0x3f, 0x0e, 0xc2, 0xfa, 0x2d, 0x65, 0x27, 0x0b, 0xa2,
+	0x1f, 0x0d, 0x34, 0xe5, 0x00, 0xf7, 0x21, 0xfe, 0xd7, 0x3e, 0xe0, 0x06, 0x1a, 0x63, 0x3c, 0x4a,
+	0x54, 0x56, 0xe5, 0xc5, 0x6c, 0x46, 0x61, 0x1b, 0x15, 0x45, 0xa2, 0x52, 0xbe, 0x70, 0x39, 0x9f,
+	0x63, 0xb4, 0x86, 0x4a, 0xc3, 0xcc, 0xf2, 0x52, 0x67, 0x51, 0x31, 0xd6, 0x9e, 0xbc, 0xd5, 0xf9,
+	0xa9, 0xf5, 0xc9, 0x3c, 0x1e, 0x89, 0xdc, 0xc8, 0xb6, 0x12, 0x6f, 0xa2, 0xc2, 0x1a, 0x28, 0x3c,
+	0x77, 0x55, 0x3b, 0x74, 0xd1, 0x95, 0xbf, 0xec, 0x1a, 0x1d, 0xc1, 0x3e, 0x1a, 0x4d, 0xdb, 0x8f,
+	0x67, 0xad, 0x6c, 0x79, 0xad, 0xe1, 0x56, 0x5a, 0xab, 0xe9, 0x66, 0x57, 0xea, 0x97, 0x2b, 0x9d,
+	0x1e, 0x1d, 0x2d, 0xbf, 0xfb, 0xfa, 0xfd, 0x83, 0x89, 0xf1, 0xb4, 0x7e, 0x01, 0xa7, 0xde, 0x16,
+	0x7e, 0x8e, 0x8a, 0x59, 0xed, 0xf8, 0xde, 0x05, 0x7a, 0x67, 0x86, 0x56, 0x99, 0xbb, 0x82, 0x1a,
+	0xa6, 0xbf, 0xf2, 0xd3, 0x7c, 0xbf, 0x7c, 0x60, 0xe2, 0xff, 0xd1, 0xd4, 0x26, 0xf3, 0x41, 0x78,
+	0x82, 0x71, 0xe2, 0x46, 0xac, 0x55, 0x68, 0x5a, 0x0b, 0x75, 0xc3, 0x6c, 0x4d, 0xbb, 0x51, 0x14,
+	0x32, 0x4f, 0xbf, 0x15, 0xfb, 0xa5, 0x14, 0xbc, 0x7d, 0xce, 0xe3, 0x34, 0x51, 0x61, 0x69, 0xa1,
+	0x89, 0xeb, 0xa8, 0xe6, 0x80, 0x4a, 0x62, 0x0e, 0x3e, 0xd9, 0xed, 0x01, 0x27, 0xaa, 0x07, 0x24,
+	0x91, 0x10, 0x13, 0x26, 0x09, 0x17, 0x8a, 0x84, 0x22, 0x08, 0xc0, 0x27, 0x8c, 0x5b, 0xce, 0x7a,
+	0x1a, 0xb2, 0x88, 0x1f, 0xa3, 0xb5, 0x0b, 0x42, 0x7c, 0x01, 0x59, 0x50, 0xcf, 0x1d, 0x00, 0x89,
+	0x20, 0xee, 0x33, 0x29, 0x99, 0xe0, 0x44, 0x09, 0xe2, 0x7a, 0x1e, 0x48, 0xa9, 0xd9, 0x18, 0xa4,
+	0x48, 0x62, 0x0f, 0x2c, 0xc7, 0x4b, 0x15, 0x97, 0xf0, 0x0b, 0x54, 0x3f, 0xaf, 0x38, 0xa4, 0x4e,
+	0x54, 0xe1, 0x15, 0x93, 0xca, 0xc2, 0x56, 0x6b, 0x1e, 0xd7, 0xdf, 0x10, 0xda, 0x07, 0x29, 0xdd,
+	0x00, 0x68, 0x9b, 0xd0, 0x67, 0x42, 0x91, 0xae, 0x48, 0xb8, 0x4f, 0xe7, 0x09, 0xed, 0x32, 0x08,
+	0x7d, 0x49, 0xdb, 0x84, 0x27, 0x61, 0x48, 0xde, 0x6e, 0xdd, 0x45, 0x77, 0x10, 0x5a, 0x8e, 0xd8,
+	0x13, 0xd8, 0x5b, 0x4e, 0x54, 0x0f, 0xcf, 0x8c, 0x9b, 0x95, 0xa9, 0xd4, 0x12, 0x31, 0x7b, 0xad,
+	0x3b, 0x42, 0xcc, 0xce, 0x34, 0x2a, 0x9d, 0x81, 0x46, 0xf6, 0x0f, 0xab, 0xc6, 0x97, 0xc3, 0xaa,
+	0xf1, 0xed, 0xb0, 0x6a, 0x7c, 0x3e, 0xaa, 0x1a, 0xfb, 0x47, 0x55, 0x63, 0xcb, 0x1c, 0x34, 0x3b,
+	0x45, 0xbd, 0x2b, 0x8b, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0x73, 0xed, 0xb7, 0x4e, 0x50, 0x05,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -332,7 +405,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProfilesServiceClient interface {
-	List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListItems, error)
+	Get(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error)
+	// This API call returns a list of supported output transcoding profiles. Most notably, the items in the response list the ID of a profile which is required when creating a new stream object.
+	List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListResponse, error)
 	Render(ctx context.Context, in *RenderRequest, opts ...grpc.CallOption) (*RenderResponse, error)
 }
 
@@ -344,8 +419,17 @@ func NewProfilesServiceClient(cc *grpc.ClientConn) ProfilesServiceClient {
 	return &profilesServiceClient{cc}
 }
 
-func (c *profilesServiceClient) List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListItems, error) {
-	out := new(ProfileListItems)
+func (c *profilesServiceClient) Get(ctx context.Context, in *ProfileRequest, opts ...grpc.CallOption) (*ProfileResponse, error) {
+	out := new(ProfileResponse)
+	err := c.cc.Invoke(ctx, "/cloud.api.profiles.v1.ProfilesService/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *profilesServiceClient) List(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*ProfileListResponse, error) {
+	out := new(ProfileListResponse)
 	err := c.cc.Invoke(ctx, "/cloud.api.profiles.v1.ProfilesService/List", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -364,7 +448,9 @@ func (c *profilesServiceClient) Render(ctx context.Context, in *RenderRequest, o
 
 // ProfilesServiceServer is the server API for ProfilesService service.
 type ProfilesServiceServer interface {
-	List(context.Context, *types.Empty) (*ProfileListItems, error)
+	Get(context.Context, *ProfileRequest) (*ProfileResponse, error)
+	// This API call returns a list of supported output transcoding profiles. Most notably, the items in the response list the ID of a profile which is required when creating a new stream object.
+	List(context.Context, *types.Empty) (*ProfileListResponse, error)
 	Render(context.Context, *RenderRequest) (*RenderResponse, error)
 }
 
@@ -372,7 +458,10 @@ type ProfilesServiceServer interface {
 type UnimplementedProfilesServiceServer struct {
 }
 
-func (*UnimplementedProfilesServiceServer) List(ctx context.Context, req *types.Empty) (*ProfileListItems, error) {
+func (*UnimplementedProfilesServiceServer) Get(ctx context.Context, req *ProfileRequest) (*ProfileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (*UnimplementedProfilesServiceServer) List(ctx context.Context, req *types.Empty) (*ProfileListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (*UnimplementedProfilesServiceServer) Render(ctx context.Context, req *RenderRequest) (*RenderResponse, error) {
@@ -381,6 +470,24 @@ func (*UnimplementedProfilesServiceServer) Render(ctx context.Context, req *Rend
 
 func RegisterProfilesServiceServer(s *grpc.Server, srv ProfilesServiceServer) {
 	s.RegisterService(&_ProfilesService_serviceDesc, srv)
+}
+
+func _ProfilesService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProfilesServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cloud.api.profiles.v1.ProfilesService/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProfilesServiceServer).Get(ctx, req.(*ProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ProfilesService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -424,6 +531,10 @@ var _ProfilesService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ProfilesServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "Get",
+			Handler:    _ProfilesService_Get_Handler,
+		},
+		{
 			MethodName: "List",
 			Handler:    _ProfilesService_List_Handler,
 		},
@@ -436,7 +547,7 @@ var _ProfilesService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "profiles/v1/profiles_service.proto",
 }
 
-func (m *ProfileListItem) Marshal() (dAtA []byte, err error) {
+func (m *ProfileRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -446,12 +557,46 @@ func (m *ProfileListItem) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ProfileListItem) MarshalTo(dAtA []byte) (int, error) {
+func (m *ProfileRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ProfileListItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ProfileRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintProfilesService(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ProfileResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ProfileResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ProfileResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -494,7 +639,7 @@ func (m *ProfileListItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *ProfileListItems) Marshal() (dAtA []byte, err error) {
+func (m *ProfileListResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -504,12 +649,12 @@ func (m *ProfileListItems) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ProfileListItems) MarshalTo(dAtA []byte) (int, error) {
+func (m *ProfileListResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ProfileListItems) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ProfileListResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -628,7 +773,23 @@ func encodeVarintProfilesService(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *ProfileListItem) Size() (n int) {
+func (m *ProfileRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovProfilesService(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ProfileResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -655,7 +816,7 @@ func (m *ProfileListItem) Size() (n int) {
 	return n
 }
 
-func (m *ProfileListItems) Size() (n int) {
+func (m *ProfileListResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -719,7 +880,7 @@ func sovProfilesService(x uint64) (n int) {
 func sozProfilesService(x uint64) (n int) {
 	return sovProfilesService(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *ProfileListItem) Unmarshal(dAtA []byte) error {
+func (m *ProfileRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -742,10 +903,96 @@ func (m *ProfileListItem) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ProfileListItem: wiretype end group for non-group")
+			return fmt.Errorf("proto: ProfileRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ProfileListItem: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ProfileRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProfilesService
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProfilesService(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthProfilesService
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ProfileResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProfilesService
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ProfileResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ProfileResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -889,7 +1136,7 @@ func (m *ProfileListItem) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *ProfileListItems) Unmarshal(dAtA []byte) error {
+func (m *ProfileListResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -912,10 +1159,10 @@ func (m *ProfileListItems) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ProfileListItems: wiretype end group for non-group")
+			return fmt.Errorf("proto: ProfileListResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ProfileListItems: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ProfileListResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -947,7 +1194,7 @@ func (m *ProfileListItems) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Items = append(m.Items, &ProfileListItem{})
+			m.Items = append(m.Items, &ProfileResponse{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
