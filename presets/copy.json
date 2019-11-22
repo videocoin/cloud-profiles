@@ -4,30 +4,45 @@
     "description": "copy",
     "is_enabled": true,
     "spec": {
-        "components": [{
-            "type": "FILTER",
-            "params": [{
-                "key": "-vf",
-                "value": "scale=-1:720"
-            }]
-        }, {
-            "type": "ENCODER",
-            "params": [{
-                "key": "-c:v",
-                "value": "copy"
-            }, {
-                "key": "-c:a",
-                "value": "copy"
-            }, {
-                "key": "-hls_list_size",
-                "value": "0"
-            }, {
-                "key": "-hls_time", 
-                "value": "10"
-            }, {
-                "key": "-f",
-                "value": "hls"
-            }]
-        }]
+        "components": [
+            {
+                "type": "FILTER",
+                "params": [
+                    {
+                        "key": "-vf",
+                        "value": "scale=-1:720"
+                    }
+                ]
+            },
+            {
+                "type": "ENCODER",
+                "params": [
+                    {
+                        "key": "-c:v",
+                        "value": "copy"
+                    },
+                    {
+                        "key": "-c:a",
+                        "value": "copy"
+                    },
+                    {
+                        "key": "-force_key_frames",
+                        "value": "expr:gte(t,n_forced*10)"
+                    },
+                    {
+                        "key": "-hls_list_size",
+                        "value": "0"
+                    },
+                    {
+                        "key": "-hls_time",
+                        "value": "10"
+                    },
+                    {
+                        "key": "-f",
+                        "value": "hls"
+                    }
+                ]
+            }
+        ]
     }
 }
