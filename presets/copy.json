@@ -6,15 +6,6 @@
     "spec": {
         "components": [
             {
-                "type": "FILTER",
-                "params": [
-                    {
-                        "key": "-vf",
-                        "value": "scale=-1:720"
-                    }
-                ]
-            },
-            {
                 "type": "ENCODER",
                 "params": [
                     {
@@ -24,10 +15,6 @@
                     {
                         "key": "-c:a",
                         "value": "copy"
-                    },
-                    {
-                        "key": "-force_key_frames",
-                        "value": "expr:gte(t,n_forced*10)"
                     },
                     {
                         "key": "-hls_list_size",
