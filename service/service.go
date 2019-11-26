@@ -1,7 +1,14 @@
 package service
 
 import (
-	ds "github.com/videocoin/cloud-profiles/datastore"
+	"context"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	v1 "github.com/videocoin/cloud-api/profiles/v1"
+	"github.com/videocoin/cloud-profiles/datastore"
 	"github.com/videocoin/cloud-profiles/manager"
 	"github.com/videocoin/cloud-profiles/rpc"
 )
@@ -12,7 +19,7 @@ type Service struct {
 }
 
 func NewService(cfg *Config) (*Service, error) {
-	ds, err := ds.NewDatastore(cfg.DBURI)
+	ds, err := datastore.NewDatastore(cfg.DBURI)
 	if err != nil {
 		return nil, err
 	}
@@ -49,5 +56,72 @@ func (s *Service) Start() error {
 }
 
 func (s *Service) Stop() error {
+	return nil
+}
+
+func (s *Service) LoadFixtures(presetsRoot string) error {
+	var presetsFiles []string
+
+	err := filepath.Walk(presetsRoot, func(path string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			presetsFiles = append(presetsFiles, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	ds, err := datastore.NewDatastore(s.cfg.DBURI)
+	if err != nil {
+		return err
+	}
+
+	m := &runtime.JSONPb{OrigName: true, EmitDefaults: true, EnumsAsInts: false}
+	ctx := context.Background()
+	profileIds := []string{}
+
+	for _, file := range presetsFiles {
+		data, err := ioutil.ReadFile(file)
+		if err != nil {
+			return err
+		}
+
+		profile := new(v1.Profile)
+		err = m.Unmarshal(data, &profile)
+		if err != nil {
+			return err
+		}
+
+		_, err = ds.Profile.Get(ctx, profile.Id)
+		if err != nil {
+			if err == datastore.ErrProfileNotFound {
+				_, createErr := ds.Profile.Create(ctx, profile)
+				if createErr != nil {
+					return createErr
+				}
+
+				profileIds = append(profileIds, profile.Id)
+				continue
+			}
+
+			return err
+		}
+
+		err = ds.Profile.Update(ctx, profile)
+		if err != nil {
+			return err
+		}
+
+		profileIds = append(profileIds, profile.Id)
+	}
+
+	if len(profileIds) > 0 {
+		err = ds.Profile.DeleteAllExceptIds(ctx, profileIds)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

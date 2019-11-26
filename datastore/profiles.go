@@ -92,3 +92,22 @@ func (ds *ProfileDatastore) List(ctx context.Context) ([]*v1.Profile, error) {
 
 	return profiles, nil
 }
+
+func (ds *ProfileDatastore) Update(ctx context.Context, profile *v1.Profile) error {
+	span, _ := opentracing.StartSpanFromContext(ctx, "Update")
+	defer span.Finish()
+
+	return ds.db.Save(profile).Error
+}
+
+func (ds *ProfileDatastore) DeleteAllExceptIds(ctx context.Context, ids []string) error {
+	span, _ := opentracing.StartSpanFromContext(ctx, "DeleteAllExceptIds")
+	defer span.Finish()
+
+	err := ds.db.Where("id NOT IN (?)", ids).Delete(&v1.Profile{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
