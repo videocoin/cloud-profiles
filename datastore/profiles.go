@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
 	"github.com/opentracing/opentracing-go"
 	v1 "github.com/videocoin/cloud-api/profiles/v1"
 
@@ -19,12 +18,20 @@ type ProfileDatastore struct {
 	db *gorm.DB
 }
 
+type Profile struct {
+	Id          string  `gorm:"type:varchar(36);PRIMARY_KEY"`
+	Name        string  `gorm:"type:varchar(255)"`
+	Description string  `gorm:"type:varchar(255)"`
+	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:null" json:"is_enabled"`
+	Spec        v1.Spec `gorm:"type:json;DEFAULT:null"`
+}
+
 func NewProfileDatastore(db *gorm.DB) (*ProfileDatastore, error) {
-	db.AutoMigrate(&v1.Profile{})
+	db.AutoMigrate(Profile{})
 	return &ProfileDatastore{db: db}, nil
 }
 
-func (ds *ProfileDatastore) Create(ctx context.Context, profile *v1.Profile) (*v1.Profile, error) {
+func (ds *ProfileDatastore) Create(ctx context.Context, profile *Profile) (*Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "Create")
 	defer span.Finish()
 
@@ -46,7 +53,7 @@ func (ds *ProfileDatastore) Delete(ctx context.Context, id string) error {
 
 	span.SetTag("id", id)
 
-	profile := &v1.Profile{
+	profile := &Profile{
 		Id: id,
 	}
 
@@ -61,13 +68,13 @@ func (ds *ProfileDatastore) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (ds *ProfileDatastore) Get(ctx context.Context, id string) (*v1.Profile, error) {
+func (ds *ProfileDatastore) Get(ctx context.Context, id string) (*Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "Get")
 	defer span.Finish()
 
 	span.SetTag("id", id)
 
-	profile := &v1.Profile{}
+	profile := &Profile{}
 
 	if err := ds.db.Where("id = ?", id).First(profile).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -80,11 +87,11 @@ func (ds *ProfileDatastore) Get(ctx context.Context, id string) (*v1.Profile, er
 	return profile, nil
 }
 
-func (ds *ProfileDatastore) List(ctx context.Context) ([]*v1.Profile, error) {
+func (ds *ProfileDatastore) List(ctx context.Context) ([]*Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "List")
 	defer span.Finish()
 
-	profiles := []*v1.Profile{}
+	profiles := []*Profile{}
 
 	if err := ds.db.Where("is_enabled = ?", true).Find(&profiles).Error; err != nil {
 		return nil, fmt.Errorf("failed to list profiles: %s", err)
@@ -93,7 +100,7 @@ func (ds *ProfileDatastore) List(ctx context.Context) ([]*v1.Profile, error) {
 	return profiles, nil
 }
 
-func (ds *ProfileDatastore) Update(ctx context.Context, profile *v1.Profile) error {
+func (ds *ProfileDatastore) Update(ctx context.Context, profile *Profile) error {
 	span, _ := opentracing.StartSpanFromContext(ctx, "Update")
 	defer span.Finish()
 
@@ -104,7 +111,7 @@ func (ds *ProfileDatastore) DeleteAllExceptIds(ctx context.Context, ids []string
 	span, _ := opentracing.StartSpanFromContext(ctx, "DeleteAllExceptIds")
 	defer span.Finish()
 
-	err := ds.db.Where("id NOT IN (?)", ids).Delete(&v1.Profile{}).Error
+	err := ds.db.Where("id NOT IN (?)", ids).Delete(&Profile{}).Error
 	if err != nil {
 		return err
 	}

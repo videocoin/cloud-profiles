@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"strings"
 
-	v1 "github.com/videocoin/cloud-api/profiles/v1"
+	ds "github.com/videocoin/cloud-profiles/datastore"
 )
 
 type Profile struct {
-	*v1.Profile
+	*ds.Profile
 }
 
 func ProfileFromContent(content []byte) (*Profile, error) {

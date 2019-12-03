@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/opentracing/opentracing-go"
-	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	tracer "github.com/videocoin/cloud-pkg/tracer"
+	ds "github.com/videocoin/cloud-profiles/datastore"
 )
 
-func (m *Manager) GetProfileByID(ctx context.Context, id string) (*v1.Profile, error) {
+func (m *Manager) GetProfileByID(ctx context.Context, id string) (*ds.Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "manager.GetProfileByID")
 	defer span.Finish()
 
@@ -21,7 +21,7 @@ func (m *Manager) GetProfileByID(ctx context.Context, id string) (*v1.Profile, e
 	return profile, nil
 }
 
-func (m *Manager) ListProfiles(ctx context.Context) ([]*v1.Profile, error) {
+func (m *Manager) ListProfiles(ctx context.Context) ([]*ds.Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "manager.List")
 	defer span.Finish()
 

@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	"github.com/videocoin/cloud-profiles/datastore"
 	"github.com/videocoin/cloud-profiles/manager"
 	"github.com/videocoin/cloud-profiles/rpc"
@@ -87,7 +86,7 @@ func (s *Service) LoadFixtures(presetsRoot string) error {
 			return err
 		}
 
-		profile := new(v1.Profile)
+		profile := new(datastore.Profile)
 		err = m.Unmarshal(data, &profile)
 		if err != nil {
 			return err
