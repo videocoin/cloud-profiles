@@ -52,7 +52,7 @@ func main() {
 
 	log.Info("loading fixtures")
 
-	err = svc.LoadFixtures("/presets")
+	err = svc.LoadFixtures("./presets")
 	if err != nil {
 		log.Fatalf("failed to load fixtures: %s", err)
 	}
