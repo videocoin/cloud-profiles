@@ -27,7 +27,6 @@ type Profile struct {
 }
 
 func NewProfileDatastore(db *gorm.DB) (*ProfileDatastore, error) {
-	db.AutoMigrate(Profile{})
 	return &ProfileDatastore{db: db}, nil
 }
 
