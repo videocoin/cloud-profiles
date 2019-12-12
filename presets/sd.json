@@ -18,6 +18,10 @@
                 "type": "ENCODER",
                 "params": [
                     {
+                        "key": "-r",
+                        "value": "30"
+                    },
+                    {
                         "key": "-c:v",
                         "value": "libx264"
                     },
