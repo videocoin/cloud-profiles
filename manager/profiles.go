@@ -4,9 +4,34 @@ import (
 	"context"
 
 	"github.com/opentracing/opentracing-go"
+	v1 "github.com/videocoin/cloud-api/profiles/manager/v1"
 	tracer "github.com/videocoin/cloud-pkg/tracer"
 	ds "github.com/videocoin/cloud-profiles/datastore"
 )
+
+func (m *Manager) Create(ctx context.Context, req *v1.ProfileCreateRequest) (*ds.Profile, error) {
+	span, _ := opentracing.StartSpanFromContext(ctx, "manager.Create")
+	defer span.Finish()
+
+	profile := &ds.Profile{
+		Name:        req.Name,
+		Description: req.Description,
+		IsEnabled:   false,
+		Rel:         req.Rel,
+	}
+
+	if req.Spec != nil {
+		profile.Spec = *req.Spec
+	}
+
+	profile, err := m.ds.Profile.Create(ctx, profile)
+	if err != nil {
+		tracer.SpanLogError(span, err)
+		return nil, err
+	}
+
+	return profile, nil
+}
 
 func (m *Manager) GetProfileByID(ctx context.Context, id string) (*ds.Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "manager.GetProfileByID")
@@ -21,8 +46,21 @@ func (m *Manager) GetProfileByID(ctx context.Context, id string) (*ds.Profile, e
 	return profile, nil
 }
 
-func (m *Manager) ListProfiles(ctx context.Context) ([]*ds.Profile, error) {
-	span, _ := opentracing.StartSpanFromContext(ctx, "manager.List")
+func (m *Manager) ListEnabledProfiles(ctx context.Context) ([]*ds.Profile, error) {
+	span, _ := opentracing.StartSpanFromContext(ctx, "manager.ListEnabledProfiles")
+	defer span.Finish()
+
+	profiles, err := m.ds.Profile.ListEnabled(ctx)
+	if err != nil {
+		tracer.SpanLogError(span, err)
+		return nil, err
+	}
+
+	return profiles, nil
+}
+
+func (m *Manager) ListAllProfiles(ctx context.Context) ([]*ds.Profile, error) {
+	span, _ := opentracing.StartSpanFromContext(ctx, "manager.ListAllProfiles")
 	defer span.Finish()
 
 	profiles, err := m.ds.Profile.List(ctx)

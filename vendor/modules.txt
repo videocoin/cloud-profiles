@@ -18,9 +18,9 @@ github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 # github.com/golang/protobuf v1.3.1
 github.com/golang/protobuf/descriptor
-github.com/golang/protobuf/jsonpb
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/protoc-gen-go/descriptor
+github.com/golang/protobuf/jsonpb
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
@@ -43,9 +43,9 @@ github.com/grpc-ecosystem/go-grpc-middleware/util/metautils
 github.com/grpc-ecosystem/go-grpc-prometheus
 # github.com/grpc-ecosystem/grpc-gateway v1.11.3
 github.com/grpc-ecosystem/grpc-gateway/runtime
-github.com/grpc-ecosystem/grpc-gateway/internal
-github.com/grpc-ecosystem/grpc-gateway/utilities
 github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options
+github.com/grpc-ecosystem/grpc-gateway/utilities
+github.com/grpc-ecosystem/grpc-gateway/internal
 # github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
 github.com/jinzhu/copier
 # github.com/jinzhu/gorm v1.9.11
@@ -103,10 +103,12 @@ github.com/uber/jaeger-client-go/thrift-gen/baggage
 github.com/uber/jaeger-lib/metrics
 # github.com/videocoin/cloud-api v0.2.15 => ../cloud-api
 github.com/videocoin/cloud-api/profiles/v1
+github.com/videocoin/cloud-api/profiles/manager/v1
 github.com/videocoin/cloud-api/rpc
 # github.com/videocoin/cloud-pkg v0.0.6 => ../cloud-pkg
 github.com/videocoin/cloud-pkg/logger
 github.com/videocoin/cloud-pkg/tracer
+github.com/videocoin/cloud-pkg/uuid4
 github.com/videocoin/cloud-pkg/grpcutil
 github.com/videocoin/cloud-pkg/mqmux
 # golang.org/x/net v0.0.0-20190311183353-d8887717615a
@@ -137,7 +139,6 @@ google.golang.org/grpc/health/grpc_health_v1
 google.golang.org/grpc/reflection
 google.golang.org/grpc/codes
 google.golang.org/grpc/grpclog
-google.golang.org/grpc/metadata
 google.golang.org/grpc/status
 google.golang.org/grpc/keepalive
 google.golang.org/grpc/balancer
@@ -155,6 +156,7 @@ google.golang.org/grpc/internal/envconfig
 google.golang.org/grpc/internal/grpcrand
 google.golang.org/grpc/internal/grpcsync
 google.golang.org/grpc/internal/transport
+google.golang.org/grpc/metadata
 google.golang.org/grpc/naming
 google.golang.org/grpc/peer
 google.golang.org/grpc/resolver

@@ -8,7 +8,8 @@ type Config struct {
 	Name    string `envconfig:"-"`
 	Version string `envconfig:"-"`
 
-	RPCAddr string `default:"0.0.0.0:5004" envconfig:"RPC_ADDR"`
+	RPCAddr        string `default:"0.0.0.0:5004" envconfig:"RPC_ADDR"`
+	ManagerRPCAddr string `default:"0.0.0.0:5084" envconfig:"MANAGER_RPC_ADDR"`
 
 	DBURI string `default:"root:root@/videocoin?charset=utf8&parseTime=True&loc=Local" envconfig:"DBURI"`
 

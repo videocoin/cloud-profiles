@@ -36,7 +36,7 @@ func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.Profil
 }
 
 func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
-	profiles, err := s.manager.ListProfiles(ctx)
+	profiles, err := s.manager.ListEnabledProfiles(ctx)
 	if err != nil {
 		logFailedTo(s.logger, "profiles list", err)
 		return nil, rpc.ErrRpcInternal

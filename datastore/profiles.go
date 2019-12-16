@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/opentracing/opentracing-go"
-	v1 "github.com/videocoin/cloud-api/profiles/v1"
 
 	"github.com/jinzhu/gorm"
+	"github.com/opentracing/opentracing-go"
+	v1 "github.com/videocoin/cloud-api/profiles/v1"
+	"github.com/videocoin/cloud-pkg/uuid4"
 )
 
 var (
@@ -22,8 +23,9 @@ type Profile struct {
 	Id          string  `gorm:"type:varchar(36);PRIMARY_KEY"`
 	Name        string  `gorm:"type:varchar(255)"`
 	Description string  `gorm:"type:varchar(255)"`
-	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:null" json:"is_enabled"`
+	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:0" json:"is_enabled"`
 	Spec        v1.Spec `gorm:"type:json;DEFAULT:null"`
+	Rel         string  `gorm:"type:text"`
 }
 
 func NewProfileDatastore(db *gorm.DB) (*ProfileDatastore, error) {
@@ -35,6 +37,11 @@ func (ds *ProfileDatastore) Create(ctx context.Context, profile *Profile) (*Prof
 	defer span.Finish()
 
 	tx := ds.db.Begin()
+
+	if profile.Id == "" {
+		id, _ := uuid4.New()
+		profile.Id = id
+	}
 
 	if err := tx.Create(profile).Error; err != nil {
 		tx.Rollback()
@@ -86,13 +93,26 @@ func (ds *ProfileDatastore) Get(ctx context.Context, id string) (*Profile, error
 	return profile, nil
 }
 
+func (ds *ProfileDatastore) ListEnabled(ctx context.Context) ([]*Profile, error) {
+	span, _ := opentracing.StartSpanFromContext(ctx, "ListEnabled")
+	defer span.Finish()
+
+	profiles := []*Profile{}
+
+	if err := ds.db.Where("is_enabled = ?", true).Find(&profiles).Error; err != nil {
+		return nil, fmt.Errorf("failed to list enabled profiles: %s", err)
+	}
+
+	return profiles, nil
+}
+
 func (ds *ProfileDatastore) List(ctx context.Context) ([]*Profile, error) {
 	span, _ := opentracing.StartSpanFromContext(ctx, "List")
 	defer span.Finish()
 
 	profiles := []*Profile{}
 
-	if err := ds.db.Where("is_enabled = ?", true).Find(&profiles).Error; err != nil {
+	if err := ds.db.Find(&profiles).Error; err != nil {
 		return nil, fmt.Errorf("failed to list profiles: %s", err)
 	}
 

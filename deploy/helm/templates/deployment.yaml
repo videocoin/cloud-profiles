@@ -40,6 +40,8 @@ spec:
               value: "6831"
             - name: RPC_ADDR
               value: 0.0.0.0:{{ .Values.service.internalRpcPort }}
+            - name: MANAGER_RPC_ADDR
+              value: 0.0.0.0:{{ .Values.service.internalManagerRpcPort }}
             - name: DBURI
               valueFrom:
                 secretKeyRef:
