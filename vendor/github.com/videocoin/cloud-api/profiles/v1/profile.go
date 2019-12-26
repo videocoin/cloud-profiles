@@ -2,7 +2,6 @@ package v1
 
 import (
 	"database/sql/driver"
-	"encoding/json"
 	"errors"
 	"strings"
 
@@ -39,7 +38,7 @@ func (p *Param) Render() string {
 }
 
 func (ct *ComponentType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(ComponentType_name[int32(*ct)])
+	return []byte(ComponentType_name[int32(*ct)]), nil
 }
 
 func (ct *ComponentType) UnmarshalJSON(b []byte) error {
