@@ -1,5 +1,6 @@
 GOOS?=linux
 GOARCH?=amd64
+ENV?=dev
 
 GCP_PROJECT=videocoin-network
 
