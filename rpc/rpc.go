@@ -31,6 +31,7 @@ func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.Profil
 	if err := copier.Copy(&response, &profile); err != nil {
 		return nil, err
 	}
+	response.MachineType = profile.Spec.MachineType
 
 	return response, nil
 }
