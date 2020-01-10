@@ -4,6 +4,7 @@
     "description": "FullHD",
     "is_enabled": true,
     "spec": {
+        "machine_type": "n1-standard-8",
         "components": [
             {
                 "type": "FILTER",

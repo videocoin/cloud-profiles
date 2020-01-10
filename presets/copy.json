@@ -4,6 +4,7 @@
     "description": "copy",
     "is_enabled": true,
     "spec": {
+        "machine_type": "n1-standard-2",
         "components": [
             {
                 "type": "ENCODER",
