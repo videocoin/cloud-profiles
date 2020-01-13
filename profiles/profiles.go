@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"strings"
 
+	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	ds "github.com/videocoin/cloud-profiles/datastore"
 )
 
@@ -38,10 +39,18 @@ func (p *Profile) Render(input, output string) string {
 		input = "/tmp/in.mp4"
 	}
 
+	for _, c := range p.Spec.Components {
+		if c.Type == v1.ComponentTypeDemuxer {
+			built = append(built, c.Render())
+		}
+	}
+
 	built = append(built, "-i "+input)
 
 	for _, c := range p.Spec.Components {
-		built = append(built, c.Render())
+		if c.Type != v1.ComponentTypeDemuxer {
+			built = append(built, c.Render())
+		}
 	}
 
 	output += "/index.m3u8"
