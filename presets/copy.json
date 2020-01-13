@@ -7,6 +7,15 @@
         "machine_type": "n1-standard-2",
         "components": [
             {
+                "type": "DEMUXER",
+                "params": [
+                    {
+                        "key": "live_start_index",
+                        "value": "-1"
+                    }
+                ]
+            },
+            {
                 "type": "ENCODER",
                 "params": [
                     {
@@ -16,7 +25,12 @@
                     {
                         "key": "-c:a",
                         "value": "copy"
-                    },
+                    }
+                ]
+            },
+            {
+                "type": "MUXER",
+                "params": [
                     {
                         "key": "-hls_list_size",
                         "value": "0"
