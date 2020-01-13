@@ -14,3 +14,5 @@ require (
 	github.com/videocoin/cloud-pkg v0.0.6
 	google.golang.org/grpc v1.26.0
 )
+
+replace github.com/videocoin/cloud-api => ../cloud-api

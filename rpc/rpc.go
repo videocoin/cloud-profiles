@@ -70,6 +70,10 @@ func (s *RpcServer) Render(ctx context.Context, req *v1.RenderRequest) (*v1.Rend
 		return nil, rpc.ErrRpcInternal
 	}
 
+	if len(req.Components) > 0 {
+		profile.Spec.Components = req.Components
+	}
+
 	p := profiles.Profile{Profile: profile}
 
 	return &v1.RenderResponse{
