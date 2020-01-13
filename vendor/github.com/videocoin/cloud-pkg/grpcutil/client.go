@@ -14,11 +14,6 @@ import (
 	"google.golang.org/grpc/keepalive"
 )
 
-func Connect(addr string, logger *logrus.Entry) (*grpc.ClientConn, error) {
-	opts := ClientDialOptsWithRetry(logger)
-	return grpc.Dial(addr, opts...)
-}
-
 func DefaultClientDialOpts(logger *logrus.Entry) []grpc.DialOption {
 	tracerOpts := grpctracing.WithTracer(opentracing.GlobalTracer())
 
