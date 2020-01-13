@@ -50,14 +50,14 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	// log.Info("loading fixtures")
+	log.Info("loading fixtures")
 
-	// err = svc.LoadFixtures("./presets")
-	// if err != nil {
-	// 	log.Fatalf("failed to load fixtures: %s", err)
-	// }
+	err = svc.LoadFixtures("./presets")
+	if err != nil {
+		log.Fatalf("failed to load fixtures: %s", err)
+	}
 
-	// log.Info("fixtures has been loaded")
+	log.Info("fixtures has been loaded")
 
 	signals := make(chan os.Signal, 1)
 	exit := make(chan bool, 1)

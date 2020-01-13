@@ -130,9 +130,16 @@ func (ds *ProfileDatastore) DeleteAllExceptIds(ctx context.Context, ids []string
 	span, _ := opentracing.StartSpanFromContext(ctx, "DeleteAllExceptIds")
 	defer span.Finish()
 
-	err := ds.db.Where("id NOT IN (?)", ids).Delete(&Profile{}).Error
-	if err != nil {
-		return err
+	if len(ids) == 0 {
+		err := ds.db.Delete(&Profile{}).Error
+		if err != nil {
+			return err
+		}
+	} else {
+		err := ds.db.Where("id NOT IN (?)", ids).Delete(&Profile{}).Error
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
