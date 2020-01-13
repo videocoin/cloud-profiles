@@ -10,8 +10,8 @@
                 "type": "DEMUXER",
                 "params": [
                     {
-                        "key": "live_start_index",
-                        "value": "-1"
+                        "key": "-live_start_index",
+                        "value": "0"
                     }
                 ]
             },
