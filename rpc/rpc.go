@@ -12,7 +12,7 @@ import (
 	"github.com/videocoin/cloud-profiles/profiles"
 )
 
-func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.ProfileResponse, error) {
+func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetProfileResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
 	span.SetTag("id", req.Id)
 	logger := s.logger.WithField("id", req.Id)
@@ -27,7 +27,7 @@ func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.Profil
 		return nil, rpc.ErrRpcInternal
 	}
 
-	response := &v1.ProfileResponse{}
+	response := &v1.GetProfileResponse{}
 	if err := copier.Copy(&response, &profile); err != nil {
 		return nil, err
 	}
