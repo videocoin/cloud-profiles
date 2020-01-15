@@ -13,11 +13,23 @@ func (m *Manager) Create(ctx context.Context, req *v1.ProfileCreateRequest) (*ds
 	span, _ := opentracing.StartSpanFromContext(ctx, "manager.Create")
 	defer span.Finish()
 
+	deposit := "10000000000000000000"
+	if req.Deposit != "" {
+		deposit = req.Deposit
+	}
+
+	reward := "10000000000000000"
+	if req.Reward != "" {
+		reward = req.Deposit
+	}
+
 	profile := &ds.Profile{
 		Name:        req.Name,
 		Description: req.Description,
 		IsEnabled:   false,
 		Rel:         req.Rel,
+		Deposit:     deposit,
+		Reward:      reward,
 	}
 
 	if req.Spec != nil {

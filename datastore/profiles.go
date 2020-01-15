@@ -26,6 +26,8 @@ type Profile struct {
 	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:0" json:"is_enabled"`
 	Spec        v1.Spec `gorm:"type:json;DEFAULT:null"`
 	Rel         string  `gorm:"type:text"`
+	Deposit     string  `gorm:"type:varchar(255)"`
+	Reward      string  `gorm:"type:varchar(255)"`
 }
 
 func NewProfileDatastore(db *gorm.DB) (*ProfileDatastore, error) {
