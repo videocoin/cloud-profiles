@@ -20,7 +20,7 @@ func (m *Manager) Create(ctx context.Context, req *v1.ProfileCreateRequest) (*ds
 
 	reward := "10000000000000000"
 	if req.Reward != "" {
-		reward = req.Deposit
+		reward = req.Reward
 	}
 
 	profile := &ds.Profile{
