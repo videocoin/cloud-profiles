@@ -32,6 +32,7 @@ func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetPro
 		return nil, err
 	}
 	response.MachineType = profile.Spec.MachineType
+	response.Components = profile.Spec.Components
 
 	return response, nil
 }
