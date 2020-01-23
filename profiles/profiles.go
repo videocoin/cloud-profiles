@@ -14,10 +14,6 @@ type Profile struct {
 func (p *Profile) Render(input, output string) string {
 	built := []string{"ffmpeg"}
 
-	if p.Name == "test" {
-		input = "/tmp/in.mp4"
-	}
-
 	for _, c := range p.Spec.Components {
 		if c.Type == v1.ComponentTypeDemuxer {
 			built = append(built, c.Render())
@@ -31,8 +27,6 @@ func (p *Profile) Render(input, output string) string {
 			built = append(built, c.Render())
 		}
 	}
-
-	output += "/index.m3u8"
 
 	built = append(built, output)
 	return strings.Join(built, " ")
