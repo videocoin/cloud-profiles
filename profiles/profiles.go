@@ -3,12 +3,15 @@ package profiles
 import (
 	"strings"
 
-	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	ds "github.com/videocoin/cloud-profiles/datastore"
 )
 
 type Profile struct {
 	*ds.Profile
+}
+
+func (p *Profile) Pipelines() []*v1.Pipeline {
+	return p.Spec.Pipelines
 }
 
 func (p *Profile) Render(input, output string) string {
@@ -18,22 +21,20 @@ func (p *Profile) Render(input, output string) string {
 		input = "/tmp/in.mp4"
 	}
 
-	for _, c := range p.Spec.Components {
-		if c.Type == v1.ComponentTypeDemuxer {
-			built = append(built, c.Render())
+	for _, p := range p.Spec.Pipelines {
+		for _, c := range p.Components {
+			if c.Type == v1.ComponentTypeDemuxer {
+				built = append(built, c.Render())
+				break
+			}
 		}
 	}
 
 	built = append(built, "-i "+input)
 
-	for _, c := range p.Spec.Components {
-		if c.Type != v1.ComponentTypeDemuxer {
-			built = append(built, c.Render())
-		}
+	for _, p := range p.Spec.Pipelines {
+		built = append(built, p.Render("", output))
 	}
 
-	output += "/index.m3u8"
-
-	built = append(built, output)
 	return strings.Join(built, " ")
 }
