@@ -5,43 +5,47 @@
     "is_enabled": true,
     "spec": {
         "machine_type": "n1-standard-2",
-        "components": [
+        "pipelines": [
             {
-                "type": "DEMUXER",
-                "params": [
+                "components": [
                     {
-                        "key": "-live_start_index",
-                        "value": "0"
-                    }
-                ]
-            },
-            {
-                "type": "ENCODER",
-                "params": [
-                    {
-                        "key": "-c:v",
-                        "value": "copy"
+                        "type": "DEMUXER",
+                        "params": [
+                            {
+                                "key": "-live_start_index",
+                                "value": "0"
+                            }
+                        ]
                     },
                     {
-                        "key": "-c:a",
-                        "value": "copy"
-                    }
-                ]
-            },
-            {
-                "type": "MUXER",
-                "params": [
-                    {
-                        "key": "-hls_list_size",
-                        "value": "0"
+                        "type": "ENCODER",
+                        "params": [
+                            {
+                                "key": "-c:v",
+                                "value": "copy"
+                            },
+                            {
+                                "key": "-c:a",
+                                "value": "copy"
+                            }
+                        ]
                     },
                     {
-                        "key": "-hls_time",
-                        "value": "10"
-                    },
-                    {
-                        "key": "-f",
-                        "value": "hls"
+                        "type": "MUXER",
+                        "params": [
+                            {
+                                "key": "-hls_list_size",
+                                "value": "0"
+                            },
+                            {
+                                "key": "-hls_time",
+                                "value": "10"
+                            },
+                            {
+                                "key": "-f",
+                                "value": "hls"
+                            }
+                        ]
                     }
                 ]
             }

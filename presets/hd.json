@@ -5,64 +5,68 @@
     "is_enabled": true,
     "spec": {
         "machine_type": "n1-standard-4",
-        "components": [
+        "pipelines": [
             {
-                "type": "DEMUXER",
-                "params": [
+                "components": [
                     {
-                        "key": "-live_start_index",
-                        "value": "0"
-                    }
-                ]
-            },
-            {
-                "type": "FILTER",
-                "params": [
-                    {
-                        "key": "-vf",
-                        "value": "scale=1280:-1"
-                    }
-                ]
-            },
-            {
-                "type": "ENCODER",
-                "params": [
-                    {
-                        "key": "-r",
-                        "value": "30"
+                        "type": "DEMUXER",
+                        "params": [
+                            {
+                                "key": "-live_start_index",
+                                "value": "0"
+                            }
+                        ]
                     },
                     {
-                        "key": "-c:v",
-                        "value": "libx264"
+                        "type": "FILTER",
+                        "params": [
+                            {
+                                "key": "-vf",
+                                "value": "scale=1280:-1"
+                            }
+                        ]
                     },
                     {
-                        "key": "-b:v",
-                        "value": "3000K"
+                        "type": "ENCODER",
+                        "params": [
+                            {
+                                "key": "-r",
+                                "value": "30"
+                            },
+                            {
+                                "key": "-c:v",
+                                "value": "libx264"
+                            },
+                            {
+                                "key": "-b:v",
+                                "value": "3000K"
+                            },
+                            {
+                                "key": "-c:a",
+                                "value": "copy"
+                            },
+                            {
+                                "key": "-force_key_frames",
+                                "value": "expr:gte(t,n_forced*10)"
+                            }
+                        ]
                     },
                     {
-                        "key": "-c:a",
-                        "value": "copy"
-                    },
-                    {
-                        "key": "-force_key_frames",
-                        "value": "expr:gte(t,n_forced*10)"
-                    }
-                ]
-            },
-            {
-                "type": "MUXER",
-                "params": [
-                    {
-                        "key": "-hls_list_size",
-                        "value": "0"
-                    },
-                    {
-                        "key": "-hls_time",
-                        "value": "10"
-                    },
-                    {
-                        "key": "-f",
-                        "value": "hls"
+                        "type": "MUXER",
+                        "params": [
+                            {
+                                "key": "-hls_list_size",
+                                "value": "0"
+                            },
+                            {
+                                "key": "-hls_time",
+                                "value": "10"
+                            },
+                            {
+                                "key": "-f",
+                                "value": "hls"
+                            }
+                        ]
                     }
                 ]
             }
