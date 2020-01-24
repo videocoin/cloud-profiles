@@ -14,18 +14,22 @@ option (gogoproto.messagename_all) = true;
 
 message Spec {
   string version = 1;
-  repeated Component components = 2;
+  repeated Pipeline pipelines = 2;
   string machine_type = 3;
+}
+
+message Pipeline {
+  repeated Component components = 1;
 }
 
 enum ComponentType {
   option (gogoproto.goproto_enum_prefix) = false;
   option (gogoproto.enum_customname) = "ComponentType";
 
-  FILTER = 0 [(gogoproto.enumvalue_customname) = "ComponentTypeFilter"];
-  ENCODER = 1 [(gogoproto.enumvalue_customname) = "ComponentTypeEncoder"];
-  MUXER = 2 [(gogoproto.enumvalue_customname) = "ComponentTypeMuxer"];
-  DEMUXER = 3 [(gogoproto.enumvalue_customname) = "ComponentTypeDemuxer"];
+  UNKNOWN = 0 [(gogoproto.enumvalue_customname) = "ComponentTypeUnknown"];
+  FILTER = 1 [(gogoproto.enumvalue_customname) = "ComponentTypeFilter"];
+  ENCODER = 2 [(gogoproto.enumvalue_customname) = "ComponentTypeEncoder"];
+  MUXER = 3 [(gogoproto.enumvalue_customname) = "ComponentTypeMuxer"];
 }
 
 message Component {
