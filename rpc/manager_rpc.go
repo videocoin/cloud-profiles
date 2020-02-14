@@ -11,7 +11,7 @@ import (
 	"github.com/videocoin/cloud-profiles/datastore"
 )
 
-func (s *ManagerRpcServer) Create(ctx context.Context, req *v1.ProfileCreateRequest) (*v1.ProfileResponse, error) {
+func (s *ManagerServer) Create(ctx context.Context, req *v1.ProfileCreateRequest) (*v1.ProfileResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
 	span.SetTag("name", req.Name)
 	logger := s.logger
@@ -31,7 +31,7 @@ func (s *ManagerRpcServer) Create(ctx context.Context, req *v1.ProfileCreateRequ
 	return resp, nil
 }
 
-func (s *ManagerRpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.ProfileResponse, error) {
+func (s *ManagerServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.ProfileResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
 	span.SetTag("id", req.Id)
 	logger := s.logger.WithField("id", req.Id)
@@ -54,7 +54,7 @@ func (s *ManagerRpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1
 	return response, nil
 }
 
-func (s *ManagerRpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
+func (s *ManagerServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
 	profiles, err := s.manager.ListAllProfiles(ctx)
 	if err != nil {
 		logFailedTo(s.logger, "profiles list", err)

@@ -14,8 +14,8 @@ import (
 
 type Service struct {
 	cfg        *Config
-	rpc        *rpc.RpcServer
-	managerRpc *rpc.ManagerRpcServer
+	rpc        *rpc.Server
+	managerRPC *rpc.ManagerServer
 }
 
 func NewService(cfg *Config) (*Service, error) {
@@ -25,30 +25,30 @@ func NewService(cfg *Config) (*Service, error) {
 	}
 
 	manager := manager.NewManager(
-		&manager.ManagerOpts{
+		&manager.Opts{
 			Ds:     ds,
 			Logger: cfg.Logger.WithField("system", "manager"),
 		})
 
-	rpcConfig := &rpc.RpcServerOpts{
+	rpcConfig := &rpc.ServerOpts{
 		Logger:  cfg.Logger,
 		Addr:    cfg.RPCAddr,
 		Ds:      ds,
 		Manager: manager,
 	}
 
-	rpcServer, err := rpc.NewRpcServer(rpcConfig)
+	rpcServer, err := rpc.NewServer(rpcConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	managerRpcConfig := &rpc.ManagerRpcServerOpts{
+	managerRPCConfig := &rpc.ManagerServerOpts{
 		Logger:  cfg.Logger,
 		Addr:    cfg.ManagerRPCAddr,
 		Ds:      ds,
 		Manager: manager,
 	}
-	managerRpc, err := rpc.NewManagerRpcServer(managerRpcConfig)
+	managerRPC, err := rpc.NewManagerServer(managerRPCConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -56,15 +56,15 @@ func NewService(cfg *Config) (*Service, error) {
 	svc := &Service{
 		cfg:        cfg,
 		rpc:        rpcServer,
-		managerRpc: managerRpc,
+		managerRPC: managerRPC,
 	}
 
 	return svc, nil
 }
 
 func (s *Service) Start() error {
-	go s.rpc.Start()
-	go s.managerRpc.Start()
+	go s.rpc.Start()  //nolint
+	go s.managerRPC.Start()  //nolint
 	return nil
 }
 
@@ -106,7 +106,7 @@ func (s *Service) LoadFixtures(presetsRoot string) error {
 			return err
 		}
 
-		_, err = ds.Profile.Get(ctx, profile.Id)
+		_, err = ds.Profile.Get(ctx, profile.ID)
 		if err != nil {
 			if err == datastore.ErrProfileNotFound {
 				_, createErr := ds.Profile.Create(ctx, profile)
@@ -114,7 +114,7 @@ func (s *Service) LoadFixtures(presetsRoot string) error {
 					return createErr
 				}
 
-				profileIds = append(profileIds, profile.Id)
+				profileIds = append(profileIds, profile.ID)
 				continue
 			}
 
@@ -126,7 +126,7 @@ func (s *Service) LoadFixtures(presetsRoot string) error {
 			return err
 		}
 
-		profileIds = append(profileIds, profile.Id)
+		profileIds = append(profileIds, profile.ID)
 	}
 
 	if len(profileIds) > 0 {

@@ -5,7 +5,7 @@ import (
 	ds "github.com/videocoin/cloud-profiles/datastore"
 )
 
-type ManagerOpts struct {
+type Opts struct {
 	Ds     *ds.Datastore
 	Logger *logrus.Entry
 }
@@ -15,7 +15,7 @@ type Manager struct {
 	logger *logrus.Entry
 }
 
-func NewManager(opts *ManagerOpts) *Manager {
+func NewManager(opts *Opts) *Manager {
 	return &Manager{
 		ds:     opts.Ds,
 		logger: opts.Logger,

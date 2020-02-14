@@ -12,7 +12,7 @@ import (
 	"github.com/videocoin/cloud-profiles/profiles"
 )
 
-func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetProfileResponse, error) {
+func (s *Server) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetProfileResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
 	span.SetTag("id", req.Id)
 	logger := s.logger.WithField("id", req.Id)
@@ -37,7 +37,7 @@ func (s *RpcServer) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetPro
 	return response, nil
 }
 
-func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
+func (s *Server) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileListResponse, error) {
 	profiles, err := s.manager.ListEnabledProfiles(ctx)
 	if err != nil {
 		logFailedTo(s.logger, "profiles list", err)
@@ -52,7 +52,7 @@ func (s *RpcServer) List(ctx context.Context, req *protoempty.Empty) (*v1.Profil
 	return response, nil
 }
 
-func (s *RpcServer) Render(ctx context.Context, req *v1.RenderRequest) (*v1.RenderResponse, error) {
+func (s *Server) Render(ctx context.Context, req *v1.RenderRequest) (*v1.RenderResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
 	span.SetTag("id", req.Id)
 	logger := s.logger.WithField("id", req.Id)

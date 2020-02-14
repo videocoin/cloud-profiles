@@ -20,7 +20,7 @@ type ProfileDatastore struct {
 }
 
 type Profile struct {
-	Id          string  `gorm:"type:varchar(36);PRIMARY_KEY"`
+	ID          string  `gorm:"type:varchar(36);PRIMARY_KEY"`
 	Name        string  `gorm:"type:varchar(255)"`
 	Description string  `gorm:"type:varchar(255)"`
 	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:0" json:"is_enabled"`
@@ -38,9 +38,9 @@ func (ds *ProfileDatastore) Create(ctx context.Context, profile *Profile) (*Prof
 
 	tx := ds.db.Begin()
 
-	if profile.Id == "" {
+	if profile.ID == "" {
 		id, _ := uuid4.New()
-		profile.Id = id
+		profile.ID = id
 	}
 
 	if err := tx.Create(profile).Error; err != nil {
@@ -60,7 +60,7 @@ func (ds *ProfileDatastore) Delete(ctx context.Context, id string) error {
 	span.SetTag("id", id)
 
 	profile := &Profile{
-		Id: id,
+		ID: id,
 	}
 
 	if err := ds.db.Delete(profile).Error; err != nil {

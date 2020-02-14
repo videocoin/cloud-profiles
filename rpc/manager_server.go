@@ -14,14 +14,14 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-type ManagerRpcServerOpts struct {
+type ManagerServerOpts struct {
 	Addr    string
 	Ds      *ds.Datastore
 	Manager *manager.Manager
 	Logger  *logrus.Entry
 }
 
-type ManagerRpcServer struct {
+type ManagerServer struct {
 	addr    string
 	grpc    *grpc.Server
 	listen  net.Listener
@@ -30,7 +30,7 @@ type ManagerRpcServer struct {
 	logger  *logrus.Entry
 }
 
-func NewManagerRpcServer(opts *ManagerRpcServerOpts) (*ManagerRpcServer, error) {
+func NewManagerServer(opts *ManagerServerOpts) (*ManagerServer, error) {
 	grpcOpts := grpcutil.DefaultServerOpts(opts.Logger)
 	grpcServer := grpc.NewServer(grpcOpts...)
 	healthService := health.NewServer()
@@ -40,7 +40,7 @@ func NewManagerRpcServer(opts *ManagerRpcServerOpts) (*ManagerRpcServer, error) 
 		return nil, err
 	}
 
-	rpcServer := &ManagerRpcServer{
+	rpcServer := &ManagerServer{
 		addr:    opts.Addr,
 		grpc:    grpcServer,
 		listen:  listen,
@@ -55,7 +55,7 @@ func NewManagerRpcServer(opts *ManagerRpcServerOpts) (*ManagerRpcServer, error) 
 	return rpcServer, nil
 }
 
-func (s *ManagerRpcServer) Start() error {
+func (s *ManagerServer) Start() error {
 	s.logger.Infof("starting manager rpc server on %s", s.addr)
 	return s.grpc.Serve(s.listen)
 }
