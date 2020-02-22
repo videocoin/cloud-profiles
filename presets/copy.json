@@ -19,6 +19,10 @@
                 "type": "ENCODER",
                 "params": [
                     {
+                        "key": "-copyts",
+                        "value": ""
+                    },
+                    {
                         "key": "-c:v",
                         "value": "copy"
                     },
