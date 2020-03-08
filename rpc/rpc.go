@@ -14,10 +14,10 @@ import (
 
 func (s *Server) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetProfileResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
-	span.SetTag("id", req.Id)
-	logger := s.logger.WithField("id", req.Id)
+	span.SetTag("id", req.ID)
+	logger := s.logger.WithField("id", req.ID)
 
-	profile, err := s.manager.GetProfileByID(ctx, req.Id)
+	profile, err := s.manager.GetProfileByID(ctx, req.ID)
 	if err != nil {
 		if err == datastore.ErrProfileNotFound {
 			return nil, rpc.ErrRpcNotFound
@@ -54,14 +54,14 @@ func (s *Server) List(ctx context.Context, req *protoempty.Empty) (*v1.ProfileLi
 
 func (s *Server) Render(ctx context.Context, req *v1.RenderRequest) (*v1.RenderResponse, error) {
 	span := opentracing.SpanFromContext(ctx)
-	span.SetTag("id", req.Id)
-	logger := s.logger.WithField("id", req.Id)
+	span.SetTag("id", req.ID)
+	logger := s.logger.WithField("id", req.ID)
 
 	if req.Input == "" || req.Output == "" {
 		return nil, rpc.ErrRpcBadRequest
 	}
 
-	profile, err := s.manager.GetProfileByID(ctx, req.Id)
+	profile, err := s.manager.GetProfileByID(ctx, req.ID)
 	if err != nil {
 		if err == datastore.ErrProfileNotFound {
 			return nil, rpc.ErrRpcNotFound
