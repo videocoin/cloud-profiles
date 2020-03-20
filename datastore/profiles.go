@@ -7,6 +7,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/opentracing/opentracing-go"
+	minersv1 "github.com/videocoin/cloud-api/miners/v1"
 	v1 "github.com/videocoin/cloud-api/profiles/v1"
 	"github.com/videocoin/cloud-pkg/uuid4"
 )
@@ -20,12 +21,13 @@ type ProfileDatastore struct {
 }
 
 type Profile struct {
-	ID          string  `gorm:"type:varchar(36);PRIMARY_KEY"`
-	Name        string  `gorm:"type:varchar(255)"`
-	Description string  `gorm:"type:varchar(255)"`
-	IsEnabled   bool    `gorm:"type:tinyint(1);DEFAULT:0" json:"is_enabled"`
-	Spec        v1.Spec `gorm:"type:json;DEFAULT:null"`
-	Rel         string  `gorm:"type:text"`
+	ID          string                 `gorm:"type:varchar(36);PRIMARY_KEY"`
+	Name        string                 `gorm:"type:varchar(255)"`
+	Description string                 `gorm:"type:varchar(255)"`
+	IsEnabled   bool                   `gorm:"type:tinyint(1);DEFAULT:0" json:"is_enabled"`
+	Spec        v1.Spec                `gorm:"type:json;DEFAULT:null"`
+	Rel         string                 `gorm:"type:text"`
+	Capacity    *minersv1.CapacityInfo `gorm:"type:json;DEFAULT:null"`
 }
 
 func NewProfileDatastore(db *gorm.DB) (*ProfileDatastore, error) {
