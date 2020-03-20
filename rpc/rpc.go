@@ -34,6 +34,7 @@ func (s *Server) Get(ctx context.Context, req *v1.ProfileRequest) (*v1.GetProfil
 	response.MachineType = profile.Spec.MachineType
 	response.Cost = profile.Spec.Cost
 	response.Components = profile.Spec.Components
+	response.Capacity = profile.Capacity
 
 	return response, nil
 }
