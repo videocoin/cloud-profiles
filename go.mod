@@ -16,3 +16,5 @@ require (
 )
 
 replace github.com/videocoin/cloud-api => ../cloud-api
+
+replace github.com/videocoin/cloud-pkg => ../cloud-pkg

@@ -18,7 +18,7 @@ var (
 )
 
 func main() {
-	logger.Init(ServiceName, Version)  //nolint
+	logger.Init(ServiceName, Version)
 
 	log := logrus.NewEntry(logrus.New())
 	log = logrus.WithFields(logrus.Fields{
@@ -61,6 +61,7 @@ func main() {
 
 	signals := make(chan os.Signal, 1)
 	exit := make(chan bool, 1)
+	errCh := make(chan error, 1)
 
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
@@ -72,9 +73,17 @@ func main() {
 	}()
 
 	log.Info("starting")
-	go svc.Start()  //nolint
+	go svc.Start(errCh)
 
-	<-exit
+	select {
+	case <-exit:
+		break
+	case err := <-errCh:
+		if err != nil {
+			log.Error(err)
+		}
+		break
+	}
 
 	log.Info("stopping")
 	err = svc.Stop()
