@@ -37,6 +37,10 @@
                         "value": "30"
                     },
                     {
+                        "key": "-g",
+                        "value": "60"
+                    },
+                    {
                         "key": "-c:v",
                         "value": "libx264"
                     },
@@ -47,10 +51,6 @@
                     {
                         "key": "-c:a",
                         "value": "copy"
-                    },
-                    {
-                        "key": "-force_key_frames",
-                        "value": "expr:gte(t,n_forced*10)"
                     }
                 ]
             },
