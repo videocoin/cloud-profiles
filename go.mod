@@ -12,7 +12,7 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/videocoin/cloud-api v0.3.0
 	github.com/videocoin/cloud-pkg v0.0.6
-	google.golang.org/grpc v1.26.0
+	google.golang.org/grpc v1.27.1
 )
 
 replace github.com/videocoin/cloud-api => ../cloud-api
