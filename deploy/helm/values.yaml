@@ -1,10 +1,15 @@
-replicasCount: 3
+replicasCount: 1
 maxUnavailableCount: 0
 
 image:
-  repository: gcr.io/videocoin-network/profiles
+  repository: registry.videocoin.net/cloud/profiles
   tag: latest
   pullPolicy: Always
+  pullSecrets: 
+  - name: regcred
+
+serviceAccount:
+  name: default
 
 config: {}
 
@@ -17,10 +22,13 @@ service:
 
 autoscaler:
   minCount: 1
-  maxCount: 10
+  maxCount: 3
   targets:
     targetCPUUtilizationPercentage: 70
 
 secrets:
-  dbUri: ""
+  dbUri: "cm9vdDpacUFEZWNYc3czMTJAKG15c3FsOjMzMDYpL2NvbnNvbGU/Y2hhcnNldD11dGY4JnBhcnNlVGltZT1UcnVlJmxvYz1Mb2NhbA=="
   sentryDsn: ""
+
+vault:
+  backend: dev-videocoin-net
