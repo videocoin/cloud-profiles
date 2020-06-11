@@ -15,10 +15,7 @@ config: {}
 
 service:
   type: ClusterIP
-  externalRpcPort: 5004
-  internalRpcPort: 5004
-  externalManagerRpcPort: 5084
-  internalManagerRpcPort: 5084
+  grpc: 5004
 
 autoscaler:
   minCount: 1
