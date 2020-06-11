@@ -13,9 +13,8 @@ import (
 )
 
 type Service struct {
-	cfg        *Config
-	rpc        *rpc.Server
-	managerRPC *rpc.ManagerServer
+	cfg *Config
+	rpc *rpc.Server
 }
 
 func NewService(cfg *Config) (*Service, error) {
@@ -24,11 +23,11 @@ func NewService(cfg *Config) (*Service, error) {
 		return nil, err
 	}
 
-	manager := manager.NewManager(
-		&manager.Opts{
-			Ds:     ds,
-			Logger: cfg.Logger.WithField("system", "manager"),
-		})
+	managerOpts := &manager.Opts{
+		Logger: cfg.Logger.WithField("system", "manager"),
+		Ds:     ds,
+	}
+	manager := manager.NewManager(managerOpts)
 
 	rpcConfig := &rpc.ServerOpts{
 		Logger:  cfg.Logger,
@@ -36,27 +35,14 @@ func NewService(cfg *Config) (*Service, error) {
 		Ds:      ds,
 		Manager: manager,
 	}
-
 	rpcServer, err := rpc.NewServer(rpcConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	managerRPCConfig := &rpc.ManagerServerOpts{
-		Logger:  cfg.Logger,
-		Addr:    cfg.ManagerRPCAddr,
-		Ds:      ds,
-		Manager: manager,
-	}
-	managerRPC, err := rpc.NewManagerServer(managerRPCConfig)
-	if err != nil {
-		return nil, err
-	}
-
 	svc := &Service{
-		cfg:        cfg,
-		rpc:        rpcServer,
-		managerRPC: managerRPC,
+		cfg: cfg,
+		rpc: rpcServer,
 	}
 
 	return svc, nil
@@ -65,10 +51,6 @@ func NewService(cfg *Config) (*Service, error) {
 func (s *Service) Start(errCh chan error) {
 	go func() {
 		errCh <- s.rpc.Start()
-	}()
-
-	go func() {
-		errCh <- s.managerRPC.Start()
 	}()
 }
 
