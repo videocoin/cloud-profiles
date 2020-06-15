@@ -17,15 +17,25 @@ service:
   type: ClusterIP
   grpc: 5004
 
+resources:
+  limits:
+   cpu: 200m
+   memory: 200Mi
+  requests:
+   cpu: 200m
+   memory: 200Mi
+
 autoscaler:
   minCount: 1
   maxCount: 3
   targets:
     targetCPUUtilizationPercentage: 70
 
-secrets:
-  dbUri: "cm9vdDpacUFEZWNYc3czMTJAKG15c3FsOjMzMDYpL2NvbnNvbGU/Y2hhcnNldD11dGY4JnBhcnNlVGltZT1UcnVlJmxvYz1Mb2NhbA=="
-  sentryDsn: ""
-
-vault:
-  backend: dev-videocoin-net
+annotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/role: "console-profiles"
+  vault.hashicorp.com/agent-inject-secret-config: "videocoin/v1/networks/everest-dev/console/profiles"
+  vault.hashicorp.com/agent-inject-template-config: |
+    {{ with secret "videocoin/v1/networks/everest-dev/console/profiles" }}{{ range $k, $v := .Data }}
+    export {{ $k }}="{{ $v }}"
+    {{ end }}{{ end }}
