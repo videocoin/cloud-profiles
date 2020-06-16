@@ -31,7 +31,7 @@ spec:
         - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["bash", "-c", "source /vault/secrets/config && /goose -dir /migrations -table profiles mysql $DBURI up && /profiles"]
+          command: ["bash", "-c", "source /vault/secrets/common && source /vault/secrets/config && /goose -dir /migrations -table profiles mysql $DBURI up && /profiles"]
           ports:
             - containerPort: {{ .Values.service.grpc }}
           readinessProbe:
